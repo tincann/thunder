@@ -21,7 +21,7 @@ MatchService.prototype.insertMatches = function(facebookAccountId, matches) {
                 defered.reject(error);
             }
         });
-        defereds.push(defered.promise);        
+        defereds.push(defered.promise);
     }
 
     return q.all(defereds);
