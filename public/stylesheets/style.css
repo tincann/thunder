@@ -248,9 +248,16 @@ input{
     margin-top: 10px;
 }
 
-#loginlist li input, #loginlist li p{
+#loginlist li input{
     position: relative;
     top: -5px;
+    z-index: 10;
+}
+
+#loginlist li p{
+  position: relative;
+  top: -5px;
+  z-index: 1;
 }
 
 .inputs {
