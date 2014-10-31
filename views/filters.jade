@@ -7,13 +7,13 @@ block content
         #facebook
             include ./includes/feedback.jade
         #title
-            p Wanted
+            p Filters
     #content.filters
 
         form(action='/filters/', method='post', id="filterform")
 
             #gender
-
+                p Gender
                 input(type="radio", id="radio1", name="gender", value="m", checked=gender=="m")
                 label(for="radio1") Man
 
@@ -23,21 +23,37 @@ block content
                 input(type="radio", id="radio3", name="gender", value="b", checked=gender=="b")
                 label(for="radio3") Bi
 
-            #age
-            input(type="number", id="age_min", name="age_min" value="#{age_min || '25'}")
-            input(type="number", id="age_max", name="age_max" value="#{age_max || '35'}")
+            #age_wrap
+                p Age
+                #age_left
+                    input(type="number", id="age_min", name="age_min" value="#{age_min || '25'}")
+                #age
+                #age_right
+                    input(type="number", id="age_max", name="age_max" value="#{age_max || '35'}")
 
-            #location.ui-widget
-                input(id="location_input", type="text" name="city" value="#{city || ''}")
-                label(for="location_input") Location
-                input(type="hidden", id="location_lat", name="location_lat", value="#{location_lat || ''}")
-                input(type="hidden", id="location_lng", name="location_lng", value="#{location_lng || ''}")
+            #location_wrap
+                #location
+                    label(for="location_input" class="locationlabel") Location
+                    input(id="location_input", type="text" name="city" value="#{city || ''}")
+                    input(type="hidden", id="location_lat", name="location_lat", value="#{location_lat || ''}")
+                    input(type="hidden", id="location_lng", name="location_lng", value="#{location_lng || ''}")
 
-            #range
-            input(type="number", id="rangekm", name="range" value="#{range || '50'}")
+            #range_wrap
+                p Range (KM)
+                #range
+                input(type="number", id="rangekm", name="range" value="#{range || '50'}")
 
-            #submit.filters
+            #submit
                 input(type="hidden", name="searchorder_id", value="#{searchorder_id || ''}")
-                input(type='submit', name='next', value='Next')
+                input(type='submit', class="submit_btn", name='next', value='Next', id="filtersubmit")
 
     #footer
+        #arrow_wrapper
+            .arrow
+                p login
+            .arrow_active
+                P filters
+            .arrow
+                p pick up
+            .arrow
+                p match
