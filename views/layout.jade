@@ -14,7 +14,7 @@ html
       = session.last_error
 
     if session && session.user
-      | Ingelogd als #{session.user.alias} (#{session.user.fbid}) (
+      | Ingelogd als #{session.user.fbalias} (#{session.user.fbid}) (
       a(href='/login/logout') Uitloggen
       | )
     block content
