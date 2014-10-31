@@ -49,6 +49,25 @@ SearchService.prototype.getPendingSearchOrderByFaceBookId = function(fbid) {
     return defered.promise;
 };
 
+SearchService.prototype.getRunningSearchOrders = function() {
+    var defered = q.defer();
+    db.SearchOrders.find({ Status: 'running' }).toArray(function(error, searchOrders){
+        if(error){
+            defered.reject(error);
+        }else{
+            defered.resolve(searchOrders);
+        }
+    });
+    return defered.promise;
+};
+
+SearchService.prototype.updateSearchOrderStatus = function(id, status) {
+    var defered = q.defer();
+    db.SearchOrders.update({});
+
+    return defered.promise;
+};
+
 SearchService.prototype.createSearchOrder = function(properties){
     console.log('creating search order');
     var defered = q.defer();

@@ -20,11 +20,11 @@ TinderService.prototype.authorize = function(account) {
 
 TinderService.prototype.setPosition = function(long, lat) {
     var defered = q.defer();
-    this.client.updatePosition('4.897156', '52.368368', function(){
+    this.client.updatePosition(long, lat, function(){
         defered.resolve();
     });
     return defered.promise;
-}; 
+};
 
 TinderService.prototype.getRecommendations = function(facebookAccountId, sampleSize) {
     var defered = q.defer();
@@ -86,6 +86,10 @@ TinderService.prototype.getUpdates = function() {
         defered.resolve(updates);
     });
     return defered.promise;
+};
+
+TinderService.prototype.cloneService = function() {
+    return new TinderService();
 };
 
 module.exports = new TinderService();
