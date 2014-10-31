@@ -12,6 +12,7 @@ a {
     margin: 0 auto;
     overflow: hidden;
     border: 1px solid #000;
+    padding: 10px;
 }
 
 #header{
