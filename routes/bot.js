@@ -14,13 +14,17 @@ router.get('/bot', function(req, res) {
     });
 });
 
-router.get('/bot/create', function(req, res) {
+router.get('/bot/createOrder', function(req, res) {
+    //facebook id
+    var fid = parseInt(req.param('fid'));
+    //match criteria
+    // var matchCriteria = new MatchCriteria(... ...);
+
     searchService.createSearchOrder(
         { 
             facebookAccountId: fbId, 
-            matchCriteria: {
-                
-            }
+            matchCriteria: { },
+            sampleSize: 30//todo hier matchcriteria meegeven
         })
     .then(function(error, order){
         console.log(error);

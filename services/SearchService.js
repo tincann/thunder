@@ -9,8 +9,13 @@ function SearchService(){
 
 SearchService.prototype.getSearchOrderById = function(id) {
     var defered = q.defer();
-    db.SearchOrders.findOne({SearchOrderId: id}, function(err, searchOrder){
-        defered.resolve(MapSearchOrder(searchOrder));
+    db.SearchOrders.findOne({_id: id}, function(error, searchOrder){
+        if(!error){
+            defered.resolve(MapSearchOrder(searchOrder));
+        }else{
+            defered.resolve(null);            
+        }
+
     });
     return defered.promise;
 };
@@ -26,10 +31,11 @@ SearchService.prototype.createSearchOrder = function(properties){
     db.SearchOrders.insert(searchOrder, function(error, order){
         if(!error){
             console.log('order inserted in db', order);
-            SearchOrderBot.addOrder(order[0]);
+            SearchOrderBot.addOrder(MapSearchOrder(order));
         }else{
             console.log(error);
         }
+        defered.resolve(error, order);
     });
     return defered.promise;
 };
