@@ -2,7 +2,7 @@ var db = require('../thunder-db').database;
 
 function SearchOrder(facebookAccountId, matchCriteria){
     this.Status = 'idle';
-    this.facebookaccountId = facebookaccountId;
+    this.facebookAccountId = facebookAccountId;
     this.matchCriteria = matchCriteria;
     this.Created = +new Date();
 }

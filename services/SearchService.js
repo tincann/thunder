@@ -16,16 +16,17 @@ SearchService.prototype.getSearchOrderById = function(id) {
 };
 
 SearchService.prototype.createSearchOrder = function(properties){
+    console.log('creating search order');
     var defered = q.defer();
     var searchOrder = new SearchOrder(
         properties.facebookAccountId, 
         properties.matchCriteria, 
         properties.pickupLines);
 
-    db.SearchOrders.insert(searchOrder, function(error, result){
+    db.SearchOrders.insert(searchOrder, function(error, order){
         console.log(error);
-        console.log(result);
-        SearchOrderBot.
+        console.log('order inserted in db', order);
+        SearchOrderBot.addOrder(order[0]);
     });
     return defered.promise;
 };
