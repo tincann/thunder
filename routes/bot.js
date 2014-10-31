@@ -4,7 +4,7 @@ var searchService = require('../services/SearchService');
 var searchOrderBot = require('../bot/SearchOrderBot');
 
 var fbId = 100007310385437;
-var fbToken = 'CAAGm0PX4ZCpsBAMZBMZCj7lzdbIiWDhgDUHQpqL6fQskXxdZCSVxH9ZAe9ilv0JqCedWb41nKwoQ7Ri4wjdSOUH09VQ19lmb3tyC9mfV6l3i1pSGWuGBoWkLYgSAQylFBUrdWFc0ZBcnmp7EKI84Xg6nhSDiI9kyx3bZBLopq7lQTQ14uaPxPwLjR1p9sb8EXe2tA8kSZBI76nvVgGOxvvioldNeVO1swo0ZD';
+var fbToken = 'CAAGm0PX4ZCpsBADFADZAxoRWxQnjb29MZC839qRXVa1jLbM8qazfhmMb4Ml8UZALXKpuJPDTXNab8evlMoN5NsUAKmHprJGt4aSDfm9N8wYDl0sU4y4RKZCTp9hGYIvDMYlDjuBjT8AXKm59BrpkWfqqYn1szpwieQlMU7ZAnEqsy3r5dAUL8BTP6p6zRujy3v6Mr9uZCV5ycksplq5QCdncwT4FxGZAKwgZD';
 
 
 router.get('/bot', function(req, res) {
@@ -19,16 +19,19 @@ router.get('/bot/createOrder', function(req, res) {
     var fid = parseInt(req.param('fid'));
     //match criteria
     // var matchCriteria = new MatchCriteria(... ...);
+    var sampleSize = parseInt(req.param('sampleSize'));
 
     searchService.createSearchOrder(
         { 
             facebookAccountId: fbId, 
-            matchCriteria: { },
-            sampleSize: 30//todo hier matchcriteria meegeven
+            matchCriteria: { },//todo hier matchcriteria meegeven
+            sampleSize: sampleSize
         })
-    .then(function(error, order){
-        console.log(error);
-        console.log(order);
+    .then(function(order){
+        console.log('inserted order:', order);
+    })
+    .fail(function(error){
+        console.log("Error creating searchorder:", error);
     });
     res.end();
 });

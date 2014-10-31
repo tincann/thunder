@@ -9,9 +9,12 @@ FacebookService.prototype.getByFbId = function(id) {
     var defered = q.defer();
     console.log('searching for fbId:', id);
     db.FacebookAccounts.findOne({FacebookId: id}, function(error, result){
-        console.log(error);
-        console.log('found facebook account:', result);
-        defered.resolve(result);
+        if(!error){
+            console.log('found facebook account:', result);
+            defered.resolve(result);
+        }else{
+            console.log('error while retrieving fb account', error);
+        }
     });
     return defered.promise;
 };

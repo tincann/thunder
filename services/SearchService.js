@@ -50,18 +50,28 @@ SearchService.prototype.createSearchOrder = function(properties){
     console.log('creating search order');
     var defered = q.defer();
     var searchOrder = new SearchOrder(
-        properties.facebookAccountId,
-        properties.matchCriteria,
-        properties.pickupLines);
+        properties.facebookAccountId, 
+        properties.matchCriteria, 
+        properties.pickupLines,
+        properties.sampleSize);
+
+    console.log(searchOrder);
 
     db.SearchOrders.insert(searchOrder, function(error, order){
+        var mappedOrder;
         if(!error){
-            console.log('order inserted in db', order);
-            SearchOrderBot.addOrder(MapSearchOrder(order));
+            order = order[0];
+            console.log('order for', order.FacebookAccountId, 'inserted in db');
+
+            mappedOrder = MapSearchOrder(order);
+            console.log('mapped order', mappedOrder);
+            SearchOrderBot.addOrder(mappedOrder);
         }else{
-            console.log(error);
+            console.log('error while adding searchorder:', error);
+            defered.reject(error);
         }
-        defered.resolve(error, order);
+
+        defered.resolve(mappedOrder);
     });
     return defered.promise;
 };

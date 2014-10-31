@@ -1,10 +1,6 @@
-function TinderMatch(facebookAccountId){
-    this.UserInfo = {};
+function TinderMatch(facebookAccountId, userInfo){
     this.FacebookAccountId = facebookAccountId;
+    this.UserInfo = userInfo;
 }
 
-TinderMatch.prototype.mapFromApi = function(userInfo) {
-    this.UserInfo = userInfo;
-};
-
-module.exports = TinderUser;
+module.exports = TinderMatch;
