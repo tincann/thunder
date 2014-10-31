@@ -9,14 +9,40 @@ function SearchService(){
 
 SearchService.prototype.getSearchOrderById = function(id) {
     var defered = q.defer();
-    db.SearchOrders.findOne({_id: id}, function(error, searchOrder){
-        if(!error){
+    db.SearchOrders.findOne({_id: id}, function(err, searchOrder){
+        if(!err && searchOrder){
+            defered.resolve(MapSearchOrder(searchOrder));
+        }else{
+            defered.resolve(null);
+        }
+    });
+
+    return defered.promise;
+};
+
+SearchService.prototype.getAllSearchOrdersByFaceBookId = function(fbid) {
+    var defered = q.defer();
+    db.SearchOrders.find({FacebookAccountId: fbid}, function(err, searchOrders){
+        if(!err && searchOrders){
+            defered.resolve(MapSearchOrders(searchOrders));
+        }else{
+            defered.resolve(null);
+        }
+    });
+
+    return defered.promise;
+};
+
+SearchService.prototype.getPendingSearchOrderByFaceBookId = function(fbid) {
+    var defered = q.defer();
+    db.SearchOrders.findOne({FacebookAccountId: fbid, 'MatchCriteria.Complete': 0}, function(err, searchOrder){
+        if(!err && searchOrder){
             defered.resolve(MapSearchOrder(searchOrder));
         }else{
             defered.resolve(null);            
         }
-
     });
+
     return defered.promise;
 };
 
@@ -30,7 +56,6 @@ SearchService.prototype.createSearchOrder = function(properties){
         properties.sampleSize);
 
     console.log(searchOrder);
-
 
     db.SearchOrders.insert(searchOrder, function(error, order){
         var mappedOrder;
@@ -51,10 +76,39 @@ SearchService.prototype.createSearchOrder = function(properties){
     return defered.promise;
 };
 
+SearchService.prototype.updateSearchOrder = function(id, properties){
+    console.log('updating search order');
+    var defered = q.defer();
+    var searchOrder = new SearchOrder(
+        properties.facebookAccountId,
+        properties.matchCriteria,
+        properties.pickupLines);
+
+    db.SearchOrders.update({_id: id}, {$set: searchOrder }, function(error, result){
+
+        if(!error){
+            console.log('order inserted in db', result);
+        }else{
+            console.log(error);
+        }
+        defered.resolve(error, result);
+
+    });
+    return defered.promise;
+};
+
 function MapSearchOrder(searchOrder){
     searchOrder.__proto__ = SearchOrder.prototype;
     return searchOrder;
 }
 
+function MapSearchOrders(searchOrders){
+    var result = searchOrders.toArray( function (err, items) {
+        items.map(function(el) { el.__proto__ = SearchOrder.prototype; });
+        }
+    );
+
+    return result;
+}
 
 module.exports = new SearchService();

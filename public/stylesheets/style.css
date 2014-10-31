@@ -101,3 +101,44 @@ input{
     height: 60px;
     background-color: #f15a24;
 }
+
+#gender{
+    margin-top: 50px;
+    width: 350px;
+    float: left;
+}
+
+#age{
+    width: 350px;
+    float: left;
+    margin-top: 25px;
+}
+
+#location{
+    width: 350px;
+    margin-top: 25px;
+    float: left;
+}
+
+#location input{
+    float: right;
+    width: 250px;
+    margin-top: 0;
+}
+
+#range{
+    width: 350px;
+    margin-top: 25px;
+    float: left;
+}
+
+#content.filters{
+    width: 500px;
+    margin: 0 auto;
+}
+
+#submit.filters{
+    float: left;
+    width: 150px;
+    margin-top: 50px;
+}

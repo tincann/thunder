@@ -8,12 +8,36 @@ block content
             p Facebook
         #title
             p Wanted
-    #content
-        p content
+    #content.filters
 
-        #gender
-            input(type="radio", name="gender_filter", value="1", checked=gender=="male")
-            input(type="radio", name="gender_filter", value="2", checked=gender=="female")
-            input(type="radio", name="gender_filter", value="3", checked=gender=="all")
+        form(action='/filters/', method='post')
+
+            #gender
+
+                input(type="radio", id="radio1", name="gender", value="m", checked=gender=="male")
+                label(for="radio1") Man
+
+                input(type="radio", id="radio2", name="gender", value="v", checked=gender=="female")
+                label(for="radio2") Vrouw
+
+                input(type="radio", id="radio3", name="gender", value="b", checked=gender=="all")
+                label(for="radio3") Bi
+
+            #age
+            input(type="number", id="age_min", name="age_min" value="25")
+            input(type="number", id="age_max", name="age_max" value="35")
+
+            #location.ui-widget
+                input(id="location_input", type="text")
+                label(for="location_input") Location
+                input(type="hidden", id="location_lat", name="location_lat", value="")
+                input(type="hidden", id="location_lng", name="location_lng", value="")
+
+            #range
+            input(type="number", id="rangekm", name="range" value="50")
+
+            #submit.filters
+                input(type="hidden", name="searchorder_id", value="")
+                input(type='submit', name='next', value='Next')
 
     #footer
