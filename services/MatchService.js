@@ -24,7 +24,22 @@ MatchService.prototype.insertMatches = function(facebookAccountId, matches) {
         defereds.push(defered.promise);
     }
 
-    return q.all(defereds);
+    return q.all(defereds).then(function(){ return matches});
+};
+
+MatchService.prototype.setMatched = function(tinderId) {
+    var defered = q.defer();
+    db.TinderMatches.update(
+        { TinderId: match.TinderId },
+        { $set: { matched: true }
+    }, function(error){
+        if(error){
+            defered.reject(error);
+            return;
+        }
+        defered.resolve();
+    });
+    return defered.promise;
 };
 
 module.exports = new MatchService();

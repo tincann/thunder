@@ -1,6 +1,7 @@
 var FacebookService = require('../services/FacebookService');
 var MatchService = require('../services/MatchService');
 var TinderService = require('../services/TinderService');
+var TinderMatch = require('../models/TinderMatch');
 
 var STATUS = {
     IDLE: 0,
@@ -34,11 +35,14 @@ SearchOrderBot.prototype.start = function(order){
         TinderService.authorize(account).then(function(){
             return TinderService.setPosition('4.897156', '52.368368');
         }).then(function(){
-            return TinderService.getRecommendations(order.SampleSize);
+            return TinderService.getRecommendations(order.FacebookAccountId, order.SampleSize);
         }).then(function(matches){
-            return MatchService.insertMatches(account.FacebookId, matches);
+            return MatchService.insertMatches(account.FacebookId, matches)
+            .then(function(){
+                return MatchService.likeBatch(matches);
+            });
         }).fail(function(error){
-            console.log('echt iets misgegaan');
+            console.log('echt iets misgegaan', error);
         });
     });
 };

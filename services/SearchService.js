@@ -85,14 +85,13 @@ SearchService.prototype.updateSearchOrder = function(id, properties){
         properties.pickupLines);
 
     db.SearchOrders.update({_id: id}, {$set: searchOrder }, function(error, result){
-
         if(!error){
             console.log('order inserted in db', result);
+            defered.resolve(result);
         }else{
-            console.log(error);
+            console.log('searchorder update failed:', error);
+            defered.reject(error);
         }
-        defered.resolve(error, result);
-
     });
     return defered.promise;
 };
