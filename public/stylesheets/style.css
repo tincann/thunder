@@ -73,7 +73,7 @@ input{
     height: 30px;
 }
 
-#facebooktoken{
+#facebooktoken, #facebookid, #facebookalias{
     width: 100%;
     overflow: hidden;
     height: 30px;
