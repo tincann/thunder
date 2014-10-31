@@ -29,7 +29,6 @@ SearchService.prototype.getAllSearchOrdersByFaceBookId = function(fbid) {
         } else if(!searchOrders || searchOrders.length == 0){
             defered.resolve(null);
         }else{
-            var temp = MapSearchOrders(searchOrders);
             defered.resolve(MapSearchOrders(searchOrders));
         }
     });

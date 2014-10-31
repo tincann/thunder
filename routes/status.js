@@ -24,22 +24,23 @@ router.get('/', function (req, res) {
             });
 
             if (!completed_searchorder) {
-                console.log('geen searchorders');
                 // Geen afgeronde searchorder, door naar het filterscherm.
                 req.session.last_error = "";
                 res.redirect('/filters');
             } else {
+
                 // Is er minimaal één afgerond?
                 var completed_searchorder = false;
                 searchorders.forEach(function (el) {
                     if (el.MatchCriteria.Complete == 1) { completed_searchorder = true;}
                 });
 
+                res.render('status', { session: req.session});
                 // Toon statusoverzicht
                 // TODO
-                MatchService.getMatchesForFbId(req.session.user.fbid).then(function(matches){
+                /*return MatchService.getMatchesForFbId(req.session.user.fbid).then(function(matches){
                     res.render('status', { session: req.session, matches: matches });
-                });
+                });*/
             }
         }
     }).fail(function (error) {

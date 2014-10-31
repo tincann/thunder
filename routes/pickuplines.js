@@ -79,10 +79,11 @@ router.post('/', function(req, res) {
             if (searchorder) {
                 // Zijn we nu compleet? TODO: dit kan echt beter.
                 var match_crit = searchorder.MatchCriteria;
+                var so_complete = false;
                 if (match_crit.Gender && match_crit.Age && match_crit.Location && match_crit.Range) {
                     searchorder.MatchCriteria.Complete = 1;
+                    so_complete = true;
                 }
-
                 // Bestaande searchorder aanpassen.
                 searchService.updateSearchOrder( searchorder._id, {
                     facebookAccountId: req.session.user.fbid,
@@ -92,8 +93,7 @@ router.post('/', function(req, res) {
                 }).then(function (result) {
                         // Opslaan succesvol, doorverwijzen naar de statuspagina of naar de filterspagina.
                         req.session.last_error = '';
-                        // TODO
-                        if (searchorder.MatchCriteria.Complete == 1) {
+                        if (so_complete) {
                             res.redirect('/status');
                         } else {
                             res.redirect('/filters');

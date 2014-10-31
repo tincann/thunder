@@ -12,7 +12,6 @@ var server = app.listen(app.get('port'), function() {
 
 SearchOrderBot.start();
 SearchUpdateBot.start();
-console.log('test');
 
 process.on('uncaughtException', function(error){
     console.log('FacebookToken expired (probably)', error);

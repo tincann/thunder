@@ -15,14 +15,15 @@ router.get('/', function (req, res) {
     searchService.getPendingSearchOrderByFaceBookId(req.session.user.fbid).then(function(existing_order) {
             if (existing_order) {
                 // Params uit de search order uit de record halen.
+
                  res.render('filters', {searchorder_id: existing_order._id,
-                    gender: existing_order.MatchCriteria.Gender,
-                    age_min: existing_order.MatchCriteria.Age.min,
-                    age_max: existing_order.MatchCriteria.Age.max,
-                    location_lat: existing_order.MatchCriteria.Location.lat,
-                    location_lng: existing_order.MatchCriteria.Location.long,
-                    range: existing_order.MatchCriteria.Range,
-                    session: req.session});
+                    gender: existing_order.MatchCriteria.Gender ? existing_order.MatchCriteria.Gender : null,
+                    age_min: existing_order.MatchCriteria.Age ? (existing_order.MatchCriteria.Age.min ? existing_order.MatchCriteria.Age.min : null) : null,
+                    age_max: existing_order.MatchCriteria.Age ? (existing_order.MatchCriteria.Age.max ? existing_order.MatchCriteria.Age.max : null) : null,
+                    location_lat: existing_order.MatchCriteria.Location ? (existing_order.MatchCriteria.Location.lat ? existing_order.MatchCriteria.Location.lat : null) : null,
+                    location_lng: existing_order.MatchCriteria.Location ? (existing_order.MatchCriteria.Location.long ? existing_order.MatchCriteria.Location.long : null) : null,
+                    range: existing_order.MatchCriteria.Range ? existing_order.MatchCriteria.Range : null,
+                    session: req.session} );
             } else {
                 // Geen openstaande order, gewoon leeg scherm laten zien.
                 res.render('filters', {session: req.session});
@@ -92,37 +93,31 @@ router.post('/', function(req, res) {
             }
 
             if (searchorder) {
-                // TODO - testen.
-                console.log('bestaande');
-                res.end();
-                return;
                 // Bestaande searchorder aanpassen.
-                var match_crit = new MatchCriteria(gender, age_min, age_max, location_lat, location_long, range, searchorder.complete);
+                var match_crit = new MatchCriteria(gender, age_min, age_max, location_lat, location_long, range, searchorder.MatchCriteria.Complete);
 
-                searchService.updateSearchOrder( {
+                searchService.updateSearchOrder( searchorder._id, {
                     facebookAccountId: req.session.user.fbid,
                     matchCriteria: match_crit,
-                    pickupLines: null,
-                    sampleSize: 0
-                }).then(function (error, result) {
-                    if (error) {
-                        // Fout melden.
-                        req.session.last_error = 'Er is een fout opgetreden bij het opslaan van de invoer: ' + error.message;
-                        res.render('filters', {
-                            searchorder_id: searchorder.searchorder_id,
-                            gender: gender,
-                            age_min: age_min,
-                            age_max: age_max,
-                            location_lat: location_lat,
-                            location_lng: location_long,
-                            range: range,
-                            session: req.session});
-                        res.end();
-                    } else {
-                        // Updaten succesvol, doorverwijzen naar de volgende pagina.
-                        req.session.last_error = '';
-                        res.redirect('/pickuplines');
-                    }
+                    pickupLines: searchorder.PickupLines,
+                    sampleSize: searchorder.SampleSize
+                }).then(function (result) {
+                    // Updaten succesvol, doorverwijzen naar de volgende pagina.
+                    req.session.last_error = '';
+                    res.redirect('/pickuplines');
+                }).fail(function (error) {
+                    // Fout melden.
+                    req.session.last_error = 'Er is een fout opgetreden bij het opslaan van de invoer: ' + error.message;
+                    res.render('filters', {
+                        searchorder_id: searchorder._id,
+                        gender: gender,
+                        age_min: age_min,
+                        age_max: age_max,
+                        location_lat: location_lat,
+                        location_lng: location_long,
+                        range: range,
+                        session: req.session});
+                    res.end();
                 });
             } else {
                 // Nieuwe searchorder aanmaken.
