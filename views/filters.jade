@@ -10,34 +10,34 @@ block content
             p Wanted
     #content.filters
 
-        form(action='/', method='post')
+        form(action='/filters/', method='post')
 
-        #gender
+            #gender
 
-            input(type="radio", id="radio1", name="gender", value="m", checked=gender=="male")
-            label(for="radio1") Man
+                input(type="radio", id="radio1", name="gender", value="m", checked=gender=="male")
+                label(for="radio1") Man
 
-            input(type="radio", id="radio2", name="gender", value="v", checked=gender=="female")
-            label(for="radio2") Vrouw
+                input(type="radio", id="radio2", name="gender", value="v", checked=gender=="female")
+                label(for="radio2") Vrouw
 
-            input(type="radio", id="radio3", name="gender", value="b", checked=gender=="all")
-            label(for="radio3") Bi
+                input(type="radio", id="radio3", name="gender", value="b", checked=gender=="all")
+                label(for="radio3") Bi
 
-        #age
-        input(type="number", id="age_min", name="age_min" value="25")
-        input(type="number", id="age_max", name="age_max" value="35")
+            #age
+            input(type="number", id="age_min", name="age_min" value="25")
+            input(type="number", id="age_max", name="age_max" value="35")
 
-        #location.ui-widget
-            input(id="location_input", type="text")
-            label(for="location_input") Location
-            input(type="hidden", id="location_lat", name="location_lat", value="")
-            input(type="hidden", id="location_lng", name="location_lng", value="")
+            #location.ui-widget
+                input(id="location_input", type="text")
+                label(for="location_input") Location
+                input(type="hidden", id="location_lat", name="location_lat", value="")
+                input(type="hidden", id="location_lng", name="location_lng", value="")
 
-        #range
-        input(type="number", id="rangekm", name="range" value="50")
+            #range
+            input(type="number", id="rangekm", name="range" value="50")
 
-        #submit.filters
-            input(type="hidden", name="searchorder_id", value="")
-            input(type='submit', name='next', value='Next')
+            #submit.filters
+                input(type="hidden", name="searchorder_id", value="")
+                input(type='submit', name='next', value='Next')
 
     #footer
