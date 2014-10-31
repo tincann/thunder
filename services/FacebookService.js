@@ -14,6 +14,7 @@ FacebookService.prototype.getByFbId = function(id) {
             defered.resolve(result);
         }else{
             console.log('error while retrieving fb account', error);
+            defered.reject(error);
         }
     });
     return defered.promise;

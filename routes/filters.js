@@ -20,7 +20,7 @@ router.get('/', function (req, res) {
                     age_min: existing_order.MatchCriteria.Age.min,
                     age_max: existing_order.MatchCriteria.Age.max,
                     location_lat: existing_order.MatchCriteria.Location.lat,
-                    location_long: existing_order.MatchCriteria.Location.long,
+                    location_lng: existing_order.MatchCriteria.Location.long,
                     range: existing_order.MatchCriteria.Range,
                     session: req.session});
             } else {

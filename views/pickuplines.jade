@@ -15,21 +15,21 @@ block content
 
                 .line
                     label(for='pickup_1') #1
-                    input(type='text', name='pickup_1')
+                    input(type='text', name='pickup_1', value="#{pickup_1 || ''}")
 
                 .line
                     label(for='pickup_2') #2
-                    input(type='text', name='pickup_2')
+                    input(type='text', name='pickup_2', value="#{pickup_2 || ''}")
 
                 .line
                     label(for='pickup_3') #3
-                    input(type='text', name='pickup_3')
+                    input(type='text', name='pickup_3', value="#{pickup_3 || ''}")
 
                 #sample
-                input(type="number", id="samplesize", name="samplesize" value="50")
+                input(type="number", id="samplesize", name="samplesize", value="#{samplesize || '50'}")
 
                 #submit.filters
-                    input(type="hidden", name="searchorder_id", value="")
+                    input(type="hidden", name="searchorder_id", value="#{searchorder_id || ''}")
                     input(type='submit', name='Go Thunder', value='Next')
 
     #footer
