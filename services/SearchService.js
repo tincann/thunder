@@ -9,7 +9,8 @@ function SearchService(){
 
 SearchService.prototype.getSearchOrderById = function(id) {
     var defered = q.defer();
-    db.SearchOrders.findOne({_id: id}, function(err, searchOrder){
+
+    db.SearchOrders.findById(id , function(err, searchOrder){
         if(!err && searchOrder){
             defered.resolve(MapSearchOrder(searchOrder));
         }else{
@@ -77,8 +78,6 @@ SearchService.prototype.createSearchOrder = function(properties){
         properties.pickupLines,
         properties.sampleSize);
 
-    console.log(searchOrder);
-
     db.SearchOrders.insert(searchOrder, function(error, order){
         var mappedOrder;
         if(!error){
@@ -101,12 +100,14 @@ SearchService.prototype.createSearchOrder = function(properties){
 SearchService.prototype.updateSearchOrder = function(id, properties){
     console.log('updating search order');
     var defered = q.defer();
+
     var searchOrder = new SearchOrder(
         properties.facebookAccountId,
         properties.matchCriteria,
-        properties.pickupLines);
+        properties.pickupLines,
+        properties.sampleSize);
 
-    db.SearchOrders.update({_id: id}, {$set: searchOrder }, function(error, result){
+    db.SearchOrders.updateById(id, {$set: searchOrder }, function(error, result){
         if(!error){
             console.log('order inserted in db', result);
             defered.resolve(result);
@@ -115,6 +116,7 @@ SearchService.prototype.updateSearchOrder = function(id, properties){
             defered.reject(error);
         }
     });
+
     return defered.promise;
 };
 

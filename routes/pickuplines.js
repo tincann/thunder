@@ -32,6 +32,7 @@ router.get('/', function (req, res) {
 router.post('/', function(req, res) {
     // Zijn we wel ingelogd?
     if (!req.session.user) {
+        res.session.last_error = '';
         res.redirect('/login');
     }
 
@@ -76,10 +77,6 @@ router.post('/', function(req, res) {
             }
 
             if (searchorder) {
-                // TODO - testen.
-                console.log('bestaande');
-                res.end();
-                return;
                 // Zijn we nu compleet? TODO: dit kan echt beter.
                 var match_crit = searchorder.MatchCriteria;
                 if (match_crit.Gender && match_crit.Age && match_crit.Location && match_crit.Range) {
@@ -87,33 +84,32 @@ router.post('/', function(req, res) {
                 }
 
                 // Bestaande searchorder aanpassen.
-                searchService.updateSearchOrder( {
+                searchService.updateSearchOrder( searchorder._id, {
                     facebookAccountId: req.session.user.fbid,
                     matchCriteria: searchorder.MatchCriteria,
                     pickupLines: [pickup_1, pickup_2, pickup_3],
                     sampleSize: samplesize
-                }).then(function (error, result) {
-                    if (error) {
-                        // Fout melden.
-                        req.session.last_error = 'Er is een fout opgetreden bij het opslaan van de invoer: ' + error.message;
-                        res.render('pickuplines', {
-                            searchorder_id: searchorder.searchorder_id,
-                            pickup_1: pickup_1,
-                            pickup_2: pickup_2,
-                            pickup_3: pickup_3,
-                            samplesize: samplesize,
-                            session: req.session});
-                        res.end();
-                    } else {
+                }).then(function (result) {
                         // Opslaan succesvol, doorverwijzen naar de statuspagina of naar de filterspagina.
                         req.session.last_error = '';
+                        // TODO
                         if (searchorder.MatchCriteria.Complete == 1) {
                             res.redirect('/status');
                         } else {
                             res.redirect('/filters');
                         }
+                }).fail(function (error) {
+                        // Fout melden.
+                        req.session.last_error = 'Er is een fout opgetreden bij het opslaan van de invoer: ' + error.message;
+                        res.render('pickuplines', {
+                            searchorder_id: searchorder._id,
+                            pickup_1: pickup_1,
+                            pickup_2: pickup_2,
+                            pickup_3: pickup_3,
+                            samplesize: samplesize,
+                            session: req.session});
                     }
-                });
+                );
             } else {
                 // Nieuwe searchorder aanmaken.
                 searchService.createSearchOrder( {
