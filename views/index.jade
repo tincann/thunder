@@ -10,16 +10,23 @@ block content
             p Login
     #content
 
-        div
+        #loginform
           form(action='/login',method='post')
+
             #facebookid
             label(for='fbid') Facebook ID
                 input(id='fbid',type='text',value='',placeholder='id',name='fbid')
+
             #facebooktoken
             label(for='fbid') Facebook Token
                 input(id='fbid',type='text',value='',placeholder='token',name='fbid')
+
             #submit
-            input(type='submit',value='Login')
+            input(type='submit',value='Login',class='button')
+
+        #recentlogin
+            p recent
+            #loginlist
+                p empty
 
     #footer
-        p footer
