@@ -90,7 +90,7 @@ router.post('/', function(req, res) {
 
                 if (searchorder) {
                     // Bestaande searchorder aanpassen.
-                    var match_crit = new MatchCriteria(gender, age_min, age_max, location_lat, location_long, range, 0);
+                    var match_crit = new MatchCriteria(gender, age_min, age_max, location_lat, location_long, range, searchorder.complete);
 
                     searchService.updateSearchOrder( {
                         facebookAccountId: req.session.user.fbid,
