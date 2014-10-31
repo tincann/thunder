@@ -6,3 +6,98 @@ body {
 a {
   color: #00B7FF;
 }
+
+#wrapper{
+    width: 990px;
+    margin: 0 auto;
+    overflow: hidden;
+    border: 1px solid #000;
+    padding: 10px;
+}
+
+#header{
+    width: 100%;
+    height: 89px;
+    overflow: hidden;
+}
+
+#logo{
+    background-image: url("../images/thunder_logo.png");
+    height: 89px;
+    width: 250px;
+    float: left;
+}
+
+#title p{
+    margin: 0;
+    padding: 0;
+}
+
+#title{
+    width: 300px;
+    height: 89px;
+    margin: 0 auto;
+    text-align: center;
+    margin-top: 40px;
+    font-size: 35px;
+    color: #f15a24;
+}
+
+input{
+    float: right;
+}
+
+#loginform{
+    width: 450px;
+    height: 450px;
+    float: left;
+    margin-top: 25px;
+    margin-left: 25px;
+}
+
+#recentlogin{
+    width: 450px;
+    height: 450px;
+    float: right;
+}
+
+#loginlist{
+    border: 1px solid #000;
+    min-height: 350px;
+    margin-right: 25px;
+}
+
+#facebookid{
+    width: 100%;
+    overflow: hidden;
+    height: 30px;
+}
+
+#facebooktoken{
+    width: 100%;
+    overflow: hidden;
+    height: 30px;
+}
+
+#submit{
+    width: 100%;
+    overflow: hidden;
+    height: 30px;
+}
+
+#facebook{
+    float: right;
+    width: 150px;
+    height: 89px;
+}
+
+#content{
+    width: 100%;
+    min-height: 500px;
+}
+
+#footer{
+    width: 100%;
+    height: 60px;
+    background-color: #f15a24;
+}
