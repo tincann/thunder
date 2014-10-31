@@ -246,6 +246,9 @@ input{
     border-bottom: 1px dotted #7f7f7f;
     height: 20px;
     margin-top: 10px;
+    list-style-type: none;
+    padding: 0px;
+    margin: 0px;
 }
 
 #loginlist li input{
@@ -258,6 +261,7 @@ input{
   position: relative;
   top: -5px;
   z-index: 1;
+  cursor: pointer;
 }
 
 .inputs {

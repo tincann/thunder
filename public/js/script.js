@@ -58,4 +58,9 @@ $(document).ready(function(){
         }
     });
 
+    $('#loginlist p').click(function(){
+        var select = $(this).prev();
+        select.trigger('click');
+    });
+
 });
