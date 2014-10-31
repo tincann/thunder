@@ -8,10 +8,9 @@ var STATUS = {
     RUNNING: 1
 };
 
-function SearchOrderBot(pollInterval){
+function SearchOrderBot(){
     this.orderQueue = [];
     this.status = STATUS.IDLE;
-    this.interval = setInterval(this.loop.bind(this), pollInterval || 50);
 }
 
 SearchOrderBot.prototype.addOrder = function(order) {
@@ -23,17 +22,21 @@ SearchOrderBot.prototype.loop = function() {
         var order = this.orderQueue.shift();
         if(order){
             console.log('dequeued order:', order);
-            this.start(order);
+            this.processOrder(order);
         }
     }
 };
 
-SearchOrderBot.prototype.start = function(order){
+SearchOrderBot.prototype.start = function(pollInterval) {
+    this.interval = setInterval(this.loop.bind(this), pollInterval || 50);
+};
+
+SearchOrderBot.prototype.processOrder = function(order){
     console.log('bot starting on order:', order);
     this.status = STATUS.RUNNING;
     FacebookService.getByFbId(order.FacebookAccountId).then(function(account){
         TinderService.authorize(account).then(function(){
-            return TinderService.setPosition('4.897156', '52.368368');
+            return TinderService.setPosition('4.897156', '52.368368'); //todo niet hardcoden
         }).then(function(){
             return TinderService.getRecommendations(order.FacebookAccountId, order.SampleSize);
         }).then(function(matches){
@@ -56,4 +59,4 @@ var setSettings = function(settings){
     console.log(settings);
 };
 
-module.exports = new SearchOrderBot(50);
+module.exports = new SearchOrderBot();

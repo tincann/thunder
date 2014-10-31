@@ -75,9 +75,5 @@ app.use(function(err, req, res, next) {
     });
 });
 
-process.on('uncaughtException', function(error){
-    console.log('FacebookToken expired (probably)', error);
-});
-
 module.exports = app;
 

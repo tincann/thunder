@@ -6,9 +6,16 @@ var STATUS = {
     RUNNING: 1
 };
 
-function SearchUpdateBot(pollInterval){
-    this.interval = setInterval(this.loop.bind(this), pollInterval || 60 * 1000);
+function SearchUpdateBot(){
 }
+
+SearchUpdateBot.prototype.start = function(pollInterval) {
+    this.interval = setInterval(this.loop.bind(this), pollInterval || 60 * 1000);
+};
+
+SearchUpdateBot.prototype.stop = function() {
+    clearInterval(this.interval);
+};
 
 SearchUpdateBot.prototype.loop = function() {
     console.log('getting tinder updates');
