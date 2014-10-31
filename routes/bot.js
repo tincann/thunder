@@ -9,4 +9,16 @@ router.get('/bot', function(req, res) {
     });
 });
 
+router.get('/bot/create', function(req, res) {
+    searchService.createSearchOrder(
+        { FacebookId: 1337, FacebookToken: "abc"},
+        "morten")
+    .then(function(error, result){
+        console.log(error);
+        console.log(result);
+    });
+});
+
+
+
 module.exports = router;
