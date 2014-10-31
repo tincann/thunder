@@ -27,6 +27,7 @@ MatchService.prototype.insertMatches = function(facebookAccountId, matches) {
     return q.all(defereds).then(function(){ return matches});
 };
 
+//Als andere persoon jou ook een like geeft dan is er een match!
 MatchService.prototype.setMatched = function(tinderId) {
     var defered = q.defer();
     db.TinderMatches.update(
