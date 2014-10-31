@@ -20,6 +20,19 @@ SearchService.prototype.getSearchOrderById = function(id) {
     return defered.promise;
 };
 
+SearchService.prototype.getAllSearchOrdersByFaceBookId = function(fbid) {
+    var defered = q.defer();
+    db.SearchOrders.find({FacebookAccountId: fbid}, function(err, searchOrders){
+        if(!err && searchOrders){
+            defered.resolve(MapSearchOrders(searchOrders));
+        }else{
+            defered.resolve(null);
+        }
+    });
+
+    return defered.promise;
+};
+
 SearchService.prototype.getPendingSearchOrderByFaceBookId = function(fbid) {
     var defered = q.defer();
     db.SearchOrders.findOne({FacebookAccountId: fbid, 'MatchCriteria.Complete': 0}, function(err, searchOrder){
@@ -77,6 +90,15 @@ SearchService.prototype.updateSearchOrder = function(id, properties){
 function MapSearchOrder(searchOrder){
     searchOrder.__proto__ = SearchOrder.prototype;
     return searchOrder;
+}
+
+function MapSearchOrders(searchOrders){
+    var result = searchOrders.toArray( function (err, items) {
+        items.map(function(el) { el.__proto__ = SearchOrder.prototype; });
+        }
+    );
+
+    return result;
 }
 
 module.exports = new SearchService();
