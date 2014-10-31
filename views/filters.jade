@@ -11,4 +11,9 @@ block content
     #content
         p content
 
+        #gender
+            input(type="radio", name="gender_filter", value="1", checked=gender=="male")
+            input(type="radio", name="gender_filter", value="2", checked=gender=="female")
+            input(type="radio", name="gender_filter", value="3", checked=gender=="all")
+
     #footer
