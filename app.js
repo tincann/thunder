@@ -10,6 +10,13 @@ var login = require('./routes/login');
 
 var app = express();
 
+//mongodb integratie
+var thunderdb = require('./thunder-db');
+app.use(function(req, res, next){
+    req.db = thunderdb.database;
+    next();
+});
+
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');

@@ -7,3 +7,12 @@ router.get('/login', function(req, res) {
 });
 
 module.exports = router;
+
+
+/*
+ router.get('/', function(req, res) {
+ req.db.FacebookAccounts.find().toArray(function(err, items){
+ console.log(items);
+ res.render('index', { title: 'test', items: items});
+ });
+ });*/
