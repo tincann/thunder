@@ -1,10 +1,9 @@
 var db = require('../thunder-db').database;
 
-function SearchOrder(credentials, initiator){
+function SearchOrder(facebookAccountId, matchCriteria){
     this.Status = 'idle';
-    this.Credentials = credentials;
-    this.Initiator = initiator;
-    //this.SearchOrderId = getNextId();
+    this.facebookaccountId = facebookaccountId;
+    this.matchCriteria = matchCriteria;
     this.Created = +new Date();
 }
 

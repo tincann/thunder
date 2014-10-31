@@ -1,6 +1,7 @@
 var db = require('../thunder-db').database;
 var q = require('q');
 var SearchOrder = require('../models/SearchOrder');
+var SearchOrderBot = require('../bot/SearchOrderBot');
 
 function SearchService(){
 
@@ -14,12 +15,17 @@ SearchService.prototype.getSearchOrderById = function(id) {
     return defered.promise;
 };
 
-SearchService.prototype.createSearchOrder = function(credentials, initiator){
+SearchService.prototype.createSearchOrder = function(properties){
     var defered = q.defer();
-    var searchOrder = new SearchOrder(credentials, initiator);
+    var searchOrder = new SearchOrder(
+        properties.facebookAccountId, 
+        properties.matchCriteria, 
+        properties.pickupLines);
+
     db.SearchOrders.insert(searchOrder, function(error, result){
         console.log(error);
         console.log(result);
+        SearchOrderBot.
     });
     return defered.promise;
 };
