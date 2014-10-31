@@ -32,7 +32,7 @@ SearchOrderBot.prototype.loop = function() {
 SearchOrderBot.prototype.start = function(order){
     console.log('bot starting on order:', order);
     this.status = STATUS.RUNNING;
-    FacebookService.getByFbId(order.facebookAccountId).then(function(account){
+    FacebookService.getByFbId(order.FacebookAccountId).then(function(account){
 
         //login
         client.authorize(account.FacebookToken, account.FacebookId, function(response){
