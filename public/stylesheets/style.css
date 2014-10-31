@@ -42,6 +42,48 @@ a {
     color: #f15a24;
 }
 
+input{
+    float: right;
+}
+
+#loginform{
+    width: 450px;
+    height: 450px;
+    float: left;
+    margin-top: 25px;
+    margin-left: 25px;
+}
+
+#recentlogin{
+    width: 450px;
+    height: 450px;
+    float: right;
+}
+
+#loginlist{
+    border: 1px solid #000;
+    min-height: 350px;
+    margin-right: 25px;
+}
+
+#facebookid{
+    width: 100%;
+    overflow: hidden;
+    height: 30px;
+}
+
+#facebooktoken{
+    width: 100%;
+    overflow: hidden;
+    height: 30px;
+}
+
+#submit{
+    width: 100%;
+    overflow: hidden;
+    height: 30px;
+}
+
 #facebook{
     float: right;
     width: 150px;
