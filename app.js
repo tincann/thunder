@@ -9,6 +9,7 @@ var bodyParser = require('body-parser');
 var index = require('./routes/index');
 var login = require('./routes/login');
 var status = require('./routes/status');
+var bot = require('./routes/bot');
 
 var app = express();
 
@@ -37,6 +38,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(index); // Default route.
 app.use('/login',login); // Handles login events
 app.use('/status',status); // Shows status of running request
+app.use(bot);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
