@@ -10,4 +10,11 @@ html
     script(type='text/javascript', src='https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/jquery-ui.min.js')
     script(type='text/javascript', src='/js/script.js')
   body
+    if session && session.last_error
+      = session.last_error
+
+    if session && session.user
+      | Ingelogd als #{session.user.alias} (#{session.user.fbid}) (
+      a(href='/login/logout') Uitloggen
+      | )
     block content

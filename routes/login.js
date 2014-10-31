@@ -10,10 +10,17 @@ router.get('/', function(req, res) {
     // Anders ophalen alle accounts die we kennen en aan de view geven voor selectie van een view om mee te werken.
     req.db.FacebookAccounts.find({}, {Alias:1, FacebookId:1}).toArray(
         function (err, items) {
-            // TODO Eventuele error afhandelen.
-            res.render('login', { accounts: items });
+            res.render('login', { accounts: items ? items : [], session: req.session });
         }
     );
+});
+
+// Logt de huidige gebruiker uit.
+router.get('/logout', function(req, res) {
+    req.session.last_error = "";
+    req.session.user = null;
+
+    res.redirect('/');
 });
 
 // Selecteert een al bekende facebook id en verwijst door naar het statusscherm.
@@ -21,15 +28,14 @@ router.post('/select', function (req,res) {
     // Is de meegegeven id bekend?
     var selected_id = parseInt(req.param('fbid', 0));
     var selected_account = req.db.FacebookAccounts.findOne({FacebookId: selected_id}, function (err, result) {
-        // TODO Eventuele error afhandelen.
-
         if(result === null) {
             // Onbekende account -> terug naar loginpagina.
-            // TODO Foutmelding tonen.
+            req.session.last_error = "Het geselecteerde account is niet gevonden.";
             res.redirect('/login');
         } else {
             // Account gevonden: zetten login in de sessie en doorverwijzen status pagina.
-            req.session.fbid = selected_id;
+            req.session.last_error = "";
+            req.session.user = {fbid: selected_id, fbalias: result.alias};
             res.redirect('/status');
         }
     });
