@@ -41,7 +41,7 @@ $(document).ready(function(){
     $('#sample').slider({
         min: 0,
         max: 500,
-        values: [50],
+        values: [$('#samplesize').val()],
         slide: function( event, ui ) {
             $('#samplesize').val(ui.values[0]);
         }
