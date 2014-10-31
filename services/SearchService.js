@@ -31,10 +31,11 @@ SearchService.prototype.createSearchOrder = function(properties){
     db.SearchOrders.insert(searchOrder, function(error, order){
         if(!error){
             console.log('order inserted in db', order);
-            SearchOrderBot.addOrder(order[0]);
+            SearchOrderBot.addOrder(MapSearchOrder(order));
         }else{
             console.log(error);
         }
+        defered.resolve(error, order);
     });
     return defered.promise;
 };
