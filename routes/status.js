@@ -9,25 +9,22 @@ router.get('/', function (req, res) {
         res.redirect('/login');
     }
 
-    res.render('status', { session: req.session });
-/*
     // Heeft deze user wel searchorders en is er minimaal één afgerond?
-    // TODO - Testen.
     searchService.getAllSearchOrdersByFaceBookId(req.session.user.fbid).then( function (searchorders) {
             if (!searchorders || searchorders.length == 0) {
-                // Geen searchorders, doorverwijzen naar de filters.
-                res.session.last_error = "";
+                // Geen searchorders voor deze ID, doorverwijzen naar de filters om er een aan te maken.
+                req.session.last_error = "";
                 res.redirect('/filters');
             } else {
                 // Is er minimaal één afgerond?
                 var completed_searchorder = false;
-                searchorders.each(function (el) {
-                    if (el.MatchCriteria.complete == 1) completed_searchorder = true;
+                searchorders.forEach(function (el) {
+                    if (el.MatchCriteria.complete == 1) { completed_searchorder = true;}
                 });
 
                 if (!completed_searchorder) {
                     // Geen afgeronde searchorder, door naar het filterscherm.
-                    res.session.last_error = "";
+                    req.session.last_error = "";
                     res.redirect('/filters');
                 } else {
                     // Toon statusoverzicht
@@ -37,7 +34,10 @@ router.get('/', function (req, res) {
 
             }
         }
-    );*/
+    ).fail(function (error) {
+            req.session.last_error('Fout bij ophalen searchorders: ' + error.message);
+            res.render('status', { session: req.session });
+        });
 
 });
 

@@ -22,11 +22,14 @@ SearchService.prototype.getSearchOrderById = function(id) {
 
 SearchService.prototype.getAllSearchOrdersByFaceBookId = function(fbid) {
     var defered = q.defer();
-    db.SearchOrders.find({FacebookAccountId: fbid}, function(err, searchOrders){
-        if(!err && searchOrders){
-            defered.resolve(MapSearchOrders(searchOrders));
-        }else{
+    db.SearchOrders.find({FacebookAccountId: fbid}).toArray( function(err, searchOrders){
+        if(err) {
+            defered.reject(err);
+        } else if(!searchOrders || searchOrders.length == 0){
             defered.resolve(null);
+        }else{
+            var temp = MapSearchOrders(searchOrders);
+            defered.resolve(MapSearchOrders(searchOrders));
         }
     });
 
@@ -102,12 +105,7 @@ function MapSearchOrder(searchOrder){
 }
 
 function MapSearchOrders(searchOrders){
-    var result = searchOrders.toArray( function (err, items) {
-        items.map(function(el) { el.__proto__ = SearchOrder.prototype; });
-        }
-    );
-
-    return result;
+    return searchOrders.map(function(el) { el.__proto__ = SearchOrder.prototype; return el;});
 }
 
 module.exports = new SearchService();
