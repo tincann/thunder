@@ -9,7 +9,15 @@ function SearchService(){
 
 SearchService.prototype.getSearchOrderById = function(id) {
     var defered = q.defer();
-    db.SearchOrders.findOne({SearchOrderId: id}, function(err, searchOrder){
+    db.SearchOrders.findOne({_id: id}, function(err, searchOrder){
+        defered.resolve(MapSearchOrder(searchOrder));
+    });
+    return defered.promise;
+};
+
+SearchService.prototype.getPendingSearchOrderByFaceBookId = function(fbid) {
+    var defered = q.defer();
+    db.SearchOrders.findOne({FacebookAccountId: fbid, 'MatchCriteria.Complete': 1}, function(err, searchOrder){
         defered.resolve(MapSearchOrder(searchOrder));
     });
     return defered.promise;
