@@ -13,7 +13,7 @@ html
     script(type='text/javascript', src='/js/script.js')
   body
     if session && session.last_error
-      = session.last_error
+      != session.last_error
 
     if session && session.user
       | Ingelogd als #{session.user.fbalias} (#{session.user.fbid}) (
