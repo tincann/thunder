@@ -9,10 +9,7 @@ router.get('/', function (req, res) {
         res.redirect('/login');
     }
 
-    res.render('status', { session: req.session });
-/*
     // Heeft deze user wel searchorders en is er minimaal één afgerond?
-    // TODO - Testen.
     searchService.getAllSearchOrdersByFaceBookId(req.session.user.fbid).then( function (searchorders) {
             if (!searchorders || searchorders.length == 0) {
                 // Geen searchorders, doorverwijzen naar de filters.
@@ -37,7 +34,7 @@ router.get('/', function (req, res) {
 
             }
         }
-    );*/
+    );
 
 });
 

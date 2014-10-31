@@ -37,4 +37,14 @@ $(document).ready(function(){
         }
     });
 
+    //Afstand slider
+    $('#sample').slider({
+        min: 0,
+        max: 500,
+        values: [50],
+        slide: function( event, ui ) {
+            $('#samplesize').val(ui.values[0]);
+        }
+    });
+
 });

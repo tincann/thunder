@@ -1,0 +1,35 @@
+extends layout
+
+block content
+  #wrapper
+    #header
+        #logo
+        #facebook
+            include ./includes/feedback.jade
+        #title
+            p Pick up lines
+    #content
+
+        #pickup
+            form(action='/pickuplines/', method='post')
+
+                .line
+                    label(for='pickup_1') #1
+                    input(type='text', name='pickup_1')
+
+                .line
+                    label(for='pickup_2') #2
+                    input(type='text', name='pickup_2')
+
+                .line
+                    label(for='pickup_3') #3
+                    input(type='text', name='pickup_3')
+
+                #sample
+                input(type="number", id="samplesize", name="samplesize" value="50")
+
+                #submit.filters
+                    input(type="hidden", name="searchorder_id", value="")
+                    input(type='submit', name='Go Thunder', value='Next')
+
+    #footer

@@ -11,6 +11,7 @@ var login = require('./routes/login');
 var status = require('./routes/status');
 var bot = require('./routes/bot');
 var filters = require('./routes/filters');
+var pickuplines = require('./routes/pickuplines');
 
 var app = express();
 
@@ -40,6 +41,7 @@ app.use(index); // Default route.
 app.use('/login',login); // Handles login events
 app.use('/status',status); // Shows status of running request
 app.use('/filters',filters); // View with filters for match
+app.use('/pickuplines',pickuplines); // View with pick up lines
 app.use(bot);
 
 // catch 404 and forward to error handler

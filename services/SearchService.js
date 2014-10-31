@@ -23,10 +23,12 @@ SearchService.prototype.getSearchOrderById = function(id) {
 SearchService.prototype.getAllSearchOrdersByFaceBookId = function(fbid) {
     var defered = q.defer();
     db.SearchOrders.find({FacebookAccountId: fbid}, function(err, searchOrders){
-        if(!err && searchOrders){
-            defered.resolve(MapSearchOrders(searchOrders));
-        }else{
+        if(err) {
+            defered.reject(err);
+        } else if(!searchOrders){
             defered.resolve(null);
+        }else{
+            defered.resolve(MapSearchOrders(searchOrders));
         }
     });
 
@@ -55,6 +57,8 @@ SearchService.prototype.createSearchOrder = function(properties){
         properties.pickupLines,
         properties.sampleSize);
 
+    console.log(searchOrder);
+
     db.SearchOrders.insert(searchOrder, function(error, order){
         var mappedOrder;
         if(!error){
@@ -65,7 +69,7 @@ SearchService.prototype.createSearchOrder = function(properties){
             console.log('mapped order', mappedOrder);
             SearchOrderBot.addOrder(mappedOrder);
         }else{
-            console.log('error while adding searchorder: ', error);
+            console.log('error while adding searchorder:', error);
             defered.reject(error);
         }
 
