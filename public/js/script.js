@@ -12,7 +12,7 @@ $(document).ready(function(){
         range: true,
         min: 18,
         max: 99,
-        values: [ 25, 35 ],
+        values: [ $('#age_min').val(), $('#age_max').val() ],
         slide: function( event, ui ) {
             $('#age_min').val(ui.values[0]);
             $('#age_max').val(ui.values[1]);
@@ -31,7 +31,7 @@ $(document).ready(function(){
     $('#range').slider({
         min: 0,
         max: 500,
-        values: [50],
+        values: [$('#rangekm').val()],
         slide: function( event, ui ) {
             $('#rangekm').val(ui.values[0]);
         }

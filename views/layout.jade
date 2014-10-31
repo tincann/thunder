@@ -10,11 +10,4 @@ html
     script(type='text/javascript', src='https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=places')
     script(type='text/javascript', src='/js/script.js')
   body
-    if session && session.last_error
-      != session.last_error
-
-    if session && session.user
-      | Ingelogd als #{session.user.fbalias} (#{session.user.fbid}) (
-      a(href='/login/logout') Uitloggen
-      | )
     block content
