@@ -43,14 +43,20 @@ SearchOrderBot.prototype.start = function(order){
             client.updatePosition('4.897156', '52.368368', function(){
 
                 //get recommendations
-                client.getRecommendations(1, function(error, data){
-                        console.log(error);
-                        console.log(data);
+                client.getRecommendations(order.SampleSize, function(error, recommendations){
+                    console.log(error);
+                    console.log(recommendations);
+                    
+
                 });
             });
         });
     });
 };
+
+SearchOrderBot.prototype.stop = function(){
+    clearInterval(this.interval);
+}
 
 var setSettings = function(settings){
     settings.user.age_filter_min = 18;
