@@ -11,14 +11,10 @@ function TinderService(){
 TinderService.prototype.authorize = function(account) {
     var defered = q.defer();
     console.log('authorizing', account.FacebookId);
-    try{
-        this.client.authorize(account.FacebookToken, account.FacebookId, function(){
-            console.log('authorized!'); 
-            defered.resolve();
-        });
-    }catch(error){
-        defered.reject(error);
-    }
+    this.client.authorize(account.FacebookToken, account.FacebookId, function(){
+        console.log('authorized!'); 
+        defered.resolve();
+    });
     return defered.promise;
 };
 
@@ -58,6 +54,7 @@ TinderService.prototype.likeBatch = function(matches) {
     for(var i  = 0; i < matches.length; i++){
         var defered = q.defer();
         var match = matches[i];
+
         this.client.like(match.TinderId, function(error, data){
             if(error){
                 console.log('liking match failed:', error);
@@ -76,6 +73,7 @@ TinderService.prototype.likeBatch = function(matches) {
     }
     q.all(defereds);
 };
+
 
 TinderService.prototype.getUpdates = function() {
     var defered = q.defer();
