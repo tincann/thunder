@@ -1,8 +1,6 @@
 var FacebookService = require('../services/FacebookService');
 var MatchService = require('../services/MatchService');
-
-var tinder = require('tinderjs');
-var client = new tinder.TinderClient();
+var TinderService = require('../services/TinderService');
 
 var STATUS = {
     IDLE: 0,
@@ -33,28 +31,14 @@ SearchOrderBot.prototype.start = function(order){
     console.log('bot starting on order:', order);
     this.status = STATUS.RUNNING;
     FacebookService.getByFbId(order.FacebookAccountId).then(function(account){
-        console.log('authorizing with ', account.FacebookToken, account.FacebookId);
-        //login
-        client.authorize(account.FacebookToken, account.FacebookId, function(response){
-            var settings = client.getDefaults();
-            setSettings(settings);
-             console.log('authorized');
-            //set lat long
-            client.updatePosition('4.897156', '52.368368', function(){
-                console.log('getting recommendations. samplesize:', order.SampleSize);
-                //get recommendations
-                client.getRecommendations(order.SampleSize, function(error, response){
-                    if(!error && response.status === 200){
-                        var recommendations = response.results;
-                        console.log('matches found:', recommendations.length);
-                        MatchService.insertMatches(account.FacebookId, recommendations);
-                    }else if(error){
-                        console.log('error while getting recommendations', error);
-                    }else{
-                        console.log('no recommendation found');
-                    }
-                });
-            });
+        TinderService.authorize(account).then(function(){
+            return TinderService.setPosition('4.897156', '52.368368');
+        }).then(function(){
+            return TinderService.getRecommendations(order.SampleSize);
+        }).then(function(matches){
+            return MatchService.insertMatches(account.FacebookId, matches);
+        }).fail(function(error){
+            console.log('echt iets misgegaan');
         });
     });
 };
