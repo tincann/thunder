@@ -16,6 +16,8 @@ router.get('/', function (req, res) {
                 req.session.last_error = "";
                 res.redirect('/filters');
             } else {
+                console.log('searchorders');
+                console.log(searchorders);
                 // Is er minimaal één afgerond?
                 var completed_searchorder = false;
                 searchorders.forEach(function (el) {
