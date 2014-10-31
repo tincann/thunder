@@ -3,12 +3,17 @@ var path = require('path');
 var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
+var session = require('cookie-session');
 var bodyParser = require('body-parser');
 
 var index = require('./routes/index');
 var login = require('./routes/login');
+var status = require('./routes/status');
 
 var app = express();
+
+// Sessies aanzetten.
+app.use(session({secret: '###WeAreThunderCommittedToGettingYouLaid###'}));
 
 //mongodb integratie
 var thunderdb = require('./thunder-db');
@@ -29,8 +34,9 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use(index);
-app.use(login);
+app.use(index); // Default route.
+app.use('/login',login); // Handles login events
+app.use('/status',status); // Shows status of running request
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

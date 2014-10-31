@@ -2,4 +2,24 @@ extends layout
 
 block content
   h1 Thunder - Your key to Tinder success
-  p Dit is de #{test}
+  br
+  p Dit zijn de bekende ids:
+  form(method='POST', action='/login/select')
+    each fbid in accounts
+      input(type='radio', name='fbid', value=fbid.FacebookId)
+      = fbid.Alias + ' (' + fbid.FacebookId + ')'
+      br
+    br
+    input(type='submit', name='select' value='Inloggen')
+
+  br
+  br
+  p Of maak een nieuwe id aan:
+  form(method='POST', action='/login/create')
+      label(for='newfbid') Facebook ID
+      input(type='text', name='newfbid')
+      br
+      label(for='newfbtoken') Facebook Token
+      input(type='text', name='newfbtoken')
+      br
+      input(type='submit', name='create', value='Aanmaken')
