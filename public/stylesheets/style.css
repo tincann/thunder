@@ -1,6 +1,7 @@
 body {
   padding: 50px;
   font: 14px 'Roboto', "Lucida Grande", Helvetica, Arial, sans-serif;
+  background-image: url("http://subtlepatterns.com/patterns/grey_wash_wall.png");
 }
 
 a {
@@ -11,14 +12,25 @@ a {
     width: 990px;
     margin: 0 auto;
     overflow: hidden;
-    border: 1px solid #000;
-    padding: 10px;
+    background-color: #fff;
+    -webkit-box-shadow: 0px 0px 30px 0px rgba(51,51,51,1);
+    -moz-box-shadow: 0px 0px 30px 0px rgba(51,51,51,1);
+    box-shadow: 0px 0px 30px 0px rgba(51,51,51,1);
+    border: 1px dotted #f15a24;
 }
 
 #header{
     width: 100%;
-    height: 89px;
+    height: 99px;
     overflow: hidden;
+    margin: 10px;
+}
+
+#divider{
+    background-image: url("../images/divider.png");
+    height: 2px;
+    width: 100%;
+    opacity: 0.5;
 }
 
 #logo{
@@ -41,6 +53,7 @@ a {
     margin-top: 40px;
     font-size: 35px;
     color: #f15a24;
+    font-family: 'Amaranth', sans-serif;
     font-weight: 700;
 }
 
@@ -52,7 +65,6 @@ input{
     width: 450px;
     height: 450px;
     float: left;
-    margin-top: 25px;
     margin-left: 25px;
 }
 
@@ -63,7 +75,6 @@ input{
 }
 
 #loginlist{
-    border: 1px solid #000;
     min-height: 350px;
     margin-right: 25px;
 }
@@ -98,7 +109,7 @@ input{
 }
 
 #footer{
-    width: 100%;
+    width: 990px;
     height: 60px;
     background-color: #f15a24;
 }
@@ -153,4 +164,115 @@ input{
 #pickup{
     margin: 0 auto;
     width: 350px;
+}
+
+#arrow_wrapper{
+    margin: 0px auto;
+    width: 476px;
+    height: 35px;
+    padding-top: 13px;
+
+}
+
+#arrow_wrapper p{
+    font-family: 'Amaranth', sans-serif;
+    font-weight: 400;
+    font-size: 20px;
+    position: relative;
+    top: -16px;
+    left: 27px;
+}
+
+.arrow_active{
+    background-image: url("../images/arrow_white.png");
+    height: 35px;
+    width: 119px;
+    float: left;
+    color: #f15a24;
+}
+
+.arrow{
+    background-image: url("../images/arrow_orange.png");
+    height: 35px;
+    width: 119px;
+    float: left;
+    color: #fff;
+}
+
+.submit_btn {
+    -moz-box-shadow:inset 0px 1px 0px 0px #ffffff;
+    -webkit-box-shadow:inset 0px 1px 0px 0px #ffffff;
+    box-shadow:inset 0px 1px 0px 0px #ffffff;
+    background:-webkit-gradient(linear, left top, left bottom, color-stop(0.05, #ededed), color-stop(1, #dfdfdf));
+    background:-moz-linear-gradient(top, #ededed 5%, #dfdfdf 100%);
+    background:-webkit-linear-gradient(top, #ededed 5%, #dfdfdf 100%);
+    background:-o-linear-gradient(top, #ededed 5%, #dfdfdf 100%);
+    background:-ms-linear-gradient(top, #ededed 5%, #dfdfdf 100%);
+    background:linear-gradient(to bottom, #ededed 5%, #dfdfdf 100%);
+    filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#ededed', endColorstr='#dfdfdf',GradientType=0);
+    background-color:#ededed;
+    -moz-border-radius:6px;
+    -webkit-border-radius:6px;
+    border-radius:6px;
+    border:1px solid #dcdcdc;
+    display:inline-block;
+    cursor:pointer;
+    color:#777777;
+    font-family:arial;
+    font-size:15px;
+    font-weight:bold;
+    padding:6px 24px;
+    text-decoration:none;
+    text-shadow:0px 1px 0px #ffffff;
+}
+
+.submit_btn:hover {
+    background:-webkit-gradient(linear, left top, left bottom, color-stop(0.05, #dfdfdf), color-stop(1, #ededed));
+    background:-moz-linear-gradient(top, #dfdfdf 5%, #ededed 100%);
+    background:-webkit-linear-gradient(top, #dfdfdf 5%, #ededed 100%);
+    background:-o-linear-gradient(top, #dfdfdf 5%, #ededed 100%);
+    background:-ms-linear-gradient(top, #dfdfdf 5%, #ededed 100%);
+    background:linear-gradient(to bottom, #dfdfdf 5%, #ededed 100%);
+    filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#dfdfdf', endColorstr='#ededed',GradientType=0);
+    background-color:#dfdfdf;
+}
+
+.submit_btn:active {
+    position:relative;
+    top:1px;
+}
+
+#loginlist li{
+    border-bottom: 1px dotted #7f7f7f;
+    height: 20px;
+    margin-top: 10px;
+}
+
+#loginlist li input, #loginlist li p{
+    position: relative;
+    top: -5px;
+}
+
+.inputs {
+    background: #D3D3D3;
+    background: -moz-linear-gradient(top, #D3D3D3 0%, #D9D9D9 38%, #E5E5E5 82%, #E7E7E7 100%);
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #D3D3D3), color-stop(38%, #D9D9D9), color-stop(82%, #E5E5E5), color-stop(100%, #E7E7E7));
+    background: -webkit-linear-gradient(top, #D3D3D3 0%, #D9D9D9 38%, #E5E5E5 82%, #E7E7E7 100%);
+    background: -o-linear-gradient(top, #D3D3D3 0%, #D9D9D9 38%, #E5E5E5 82%, #E7E7E7 100%);
+    background: -ms-linear-gradient(top, #D3D3D3 0%, #D9D9D9 38%, #E5E5E5 82%, #E7E7E7 100%);
+    background: linear-gradient(to bottom, #D3D3D3 0%, #D9D9D9 38%, #E5E5E5 82%, #E7E7E7 100%);
+    filter: progid: DXImageTransform.Microsoft.gradient( startColorstr='#d3d3d3', endColorstr='#e7e7e7', GradientType=0 );
+    display: block;
+    padding: 12px 10px;
+    color: #999;
+    font-size: 1.2em;
+    font-weight: bold;
+    text-shadow: 1px 1px 1px #FFF;
+    border: 0px solid rgba(16, 103, 133, 0.6);
+    box-shadow: 0 0 3px rgba(255, 255, 255, 0.5), inset 0 1px 4px rgba(0, 0, 0, 0.2);
+    border-radius: 3px;
+    outline: 0;
+    width: 270px;
+    position: relative;
+    top: -10px;
 }

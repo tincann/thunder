@@ -8,35 +8,50 @@ block content
             include ./includes/feedback.jade
         #title
             p Login
+
+    #divider
+
     #content
 
         #loginform
+            h3 New user account
             form(action='/login/create',method='post')
 
                 #facebookalias
                 label(for='newfbalias') Facebook naam
-                      input(type='text', name='newfbalias')
+                      input(type='text', name='newfbalias', class="inputs")
 
                 #facebookid
                 label(for='newfbid') Facebook ID
-                      input(type='text', name='newfbid')
+                      input(type='text', name='newfbid', class="inputs")
 
                 #facebooktoken
                 label(for='newfbtoken') Facebook Token
-                      input(type='text', name='newfbtoken')
+                      input(type='text', name='newfbtoken', class="inputs")
 
                 #submit
-                input(type='submit', name='create', value='Aanmaken')
+                input(type='submit', class="submit_btn", name='create', value='Aanmaken')
 
         #recentlogin
-            p recent
+            h3 Recent user accounts
             #loginlist
                 form(method='POST', action='/login/select')
+
                     each fbid in accounts
-                      input(type='radio', name='fbid', value=fbid.FacebookId)
-                      = fbid.Alias + ' (' + fbid.FacebookId + ')'
-                      br
+                        li
+                          input(type='radio', name='fbid', value=fbid.FacebookId)
+                          p= fbid.Alias + ' (' + fbid.FacebookId + ')'
+
                     br
-                    input(type='submit', name='select' value='Inloggen')
+                    input(type='submit', class="submit_btn", name='select' value='Inloggen')
 
     #footer
+        #arrow_wrapper
+            .arrow_active
+                p login
+            .arrow
+                P filters
+            .arrow
+                p pick up
+            .arrow
+                p match
