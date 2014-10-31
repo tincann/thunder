@@ -8,6 +8,9 @@ router.get('/', function (req, res) {
         res.redirect('/login');
     }
 
+    // Als er nog geen search is, dan doorverwijzen naar filters.
+    // TODO
+
     res.render('status', { session: req.session });
 });
 
