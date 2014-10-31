@@ -10,6 +10,14 @@ var users = require('./routes/users');
 
 var app = express();
 
+//mongodb integratie
+var mongo = require('mongoskin');
+var db = mongo.db("mongodb://php53-dev:27017/thunder-db", {native_parser:true});
+app.use(function(req, res, next){
+    req.db = db;
+    next();
+});
+
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
