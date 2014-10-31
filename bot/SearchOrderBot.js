@@ -1,4 +1,5 @@
 var FacebookService = require('../services/FacebookService');
+var MatchService = require('../services/MatchService');
 
 var tinder = require('tinderjs');
 var client = new tinder.TinderClient();
@@ -15,7 +16,6 @@ function SearchOrderBot(pollInterval){
 }
 
 SearchOrderBot.prototype.addOrder = function(order) {
-    console.log('search order added the bot queue', order);
     this.orderQueue.push(order);
 };
 
@@ -33,21 +33,26 @@ SearchOrderBot.prototype.start = function(order){
     console.log('bot starting on order:', order);
     this.status = STATUS.RUNNING;
     FacebookService.getByFbId(order.FacebookAccountId).then(function(account){
-
+        console.log('authorizing with ', account.FacebookToken, account.FacebookId);
         //login
         client.authorize(account.FacebookToken, account.FacebookId, function(response){
             var settings = client.getDefaults();
             setSettings(settings);
-             
+             console.log('authorized');
             //set lat long
             client.updatePosition('4.897156', '52.368368', function(){
-
+                console.log('getting recommendations. samplesize:', order.SampleSize);
                 //get recommendations
-                client.getRecommendations(order.SampleSize, function(error, recommendations){
-                    console.log(error);
-                    console.log(recommendations);
-                    
-
+                client.getRecommendations(order.SampleSize, function(error, response){
+                    if(!error && response.status === 200){
+                        var recommendations = response.results;
+                        console.log('matches found:', recommendations.length);
+                        MatchService.insertMatches(account.FacebookId, recommendations);
+                    }else if(error){
+                        console.log('error while getting recommendations', error);
+                    }else{
+                        console.log('no recommendation found');
+                    }
                 });
             });
         });
@@ -62,6 +67,5 @@ var setSettings = function(settings){
     settings.user.age_filter_min = 18;
     console.log(settings);
 };
-
 
 module.exports = new SearchOrderBot(50);

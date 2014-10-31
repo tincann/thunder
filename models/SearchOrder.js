@@ -1,10 +1,11 @@
 var db = require('../thunder-db').database;
 
-function SearchOrder(facebookAccountId, matchCriteria, sampleSize){
+function SearchOrder(facebookAccountId, matchCriteria, pickupLines, sampleSize){
     this.Status = 'waiting';
     this.FacebookAccountId = facebookAccountId;
-    this.MatchCriteria = matchCriteria;
-    this.SampleSize = sampleSize;
+    this.MatchCriteria = matchCriteria || {};
+    this.PickupLines = pickupLines || [];
+    this.SampleSize = sampleSize || 30;
     this.Created = +new Date();
 }
 
