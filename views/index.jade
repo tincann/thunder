@@ -1,4 +1,25 @@
 extends layout
 
 block content
-  p index
+  #wrapper
+    #header
+        #logo
+        #facebook
+            p Facebook
+        #title
+            p Login
+    #content
+
+        div
+          form(action='/login',method='post')
+            #facebookid
+            label(for='fbid') Facebook ID
+                input(id='fbid',type='text',value='',placeholder='id',name='fbid')
+            #facebooktoken
+            label(for='fbid') Facebook Token
+                input(id='fbid',type='text',value='',placeholder='token',name='fbid')
+            #submit
+            input(type='submit',value='Login')
+
+    #footer
+        p footer
