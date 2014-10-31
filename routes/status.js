@@ -20,7 +20,7 @@ router.get('/', function (req, res) {
             // Is er minimaal één afgerond?
             var completed_searchorder = false;
             searchorders.forEach(function (el) {
-                if (el.MatchCriteria.complete == 1) { completed_searchorder = true;}
+                if (el.MatchCriteria.Complete == 1) { completed_searchorder = true;}
             });
 
             if (!completed_searchorder) {
@@ -32,7 +32,7 @@ router.get('/', function (req, res) {
                 // Is er minimaal één afgerond?
                 var completed_searchorder = false;
                 searchorders.forEach(function (el) {
-                    if (el.MatchCriteria.complete == 1) { completed_searchorder = true;}
+                    if (el.MatchCriteria.Complete == 1) { completed_searchorder = true;}
                 });
 
                 // Toon statusoverzicht
