@@ -60,10 +60,10 @@ router.post('/', function(req, res) {
     if (age_min >= age_max) {
         validation_errors.push("<li>De minimum leeftijd moet lager liggen dan de maximum leeftijd.</li>");
     }
-    if (isNaN(location_lat) || location_lat <= 0.0) {
+    if (isNaN(location_lat)) {
         validation_errors.push("<li>De opgegeven location_lat is ongeldig.</li>");
     }
-    if (isNaN(location_long) || location_long <= 0.0) {
+    if (isNaN(location_long)) {
         validation_errors.push("<li>De opgegeven location_lng is ongeldig.</li>");
     }
     if (isNaN(range) || range <= 0) {
