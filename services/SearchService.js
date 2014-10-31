@@ -24,9 +24,12 @@ SearchService.prototype.createSearchOrder = function(properties){
         properties.pickupLines);
 
     db.SearchOrders.insert(searchOrder, function(error, order){
-        console.log(error);
-        console.log('order inserted in db', order);
-        SearchOrderBot.addOrder(order[0]);
+        if(!error){
+            console.log('order inserted in db', order);
+            SearchOrderBot.addOrder(order[0]);
+        }else{
+            console.log(error);
+        }
     });
     return defered.promise;
 };
