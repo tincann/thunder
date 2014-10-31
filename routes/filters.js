@@ -73,7 +73,6 @@ router.post('/', function(req, res) {
     // Nu ophalen eventuele meegegeven searchorder.
     searchService.getSearchOrderById(searchorder_id).then(function (searchorder) {
             if (searchorder_id && !searchorder) {
-                // TODO - testen.
                 validation_errors.push("<li>De bestaande searchorder is ongeldig.</li>");
             }
 
