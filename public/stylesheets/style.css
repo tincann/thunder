@@ -126,7 +126,7 @@ input{
     margin-top: 0;
 }
 
-#range{
+#range, #sample{
     width: 350px;
     margin-top: 25px;
     float: left;
@@ -141,4 +141,15 @@ input{
     float: left;
     width: 150px;
     margin-top: 50px;
+}
+
+.line{
+    width: 350px;
+    float: left;
+    margin-top: 25px;
+}
+
+#pickup{
+    margin: 0 auto;
+    width: 350px;
 }
