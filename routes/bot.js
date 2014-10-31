@@ -14,7 +14,8 @@ router.get('/bot', function(req, res) {
     });
 });
 
-router.get('/bot/create', function(req, res) {
+router.get('/bot/createOrder', function(req, res) {
+    req.
     searchService.createSearchOrder(
         { 
             facebookAccountId: fbId, 

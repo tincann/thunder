@@ -9,8 +9,13 @@ function SearchService(){
 
 SearchService.prototype.getSearchOrderById = function(id) {
     var defered = q.defer();
-    db.SearchOrders.findOne({SearchOrderId: id}, function(err, searchOrder){
-        defered.resolve(MapSearchOrder(searchOrder));
+    db.SearchOrders.findOne({_id: id}, function(error, searchOrder){
+        if(!error){
+            defered.resolve(MapSearchOrder(searchOrder));
+        }else{
+            defered.resolve(null);            
+        }
+
     });
     return defered.promise;
 };
