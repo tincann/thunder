@@ -136,3 +136,9 @@ input{
     width: 500px;
     margin: 0 auto;
 }
+
+#submit.filters{
+    float: left;
+    width: 150px;
+    margin-top: 50px;
+}

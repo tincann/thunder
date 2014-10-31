@@ -14,7 +14,8 @@ $(document).ready(function(){
         max: 99,
         values: [ 25, 35 ],
         slide: function( event, ui ) {
-            //$( "#amount" ).val( "$" + ui.values[ 0 ] + " - $" + ui.values[ 1 ] );
+            $('#age_min').val(ui.values[0]);
+            $('#age_max').val(ui.values[1]);
         }
     });
 
@@ -22,11 +23,18 @@ $(document).ready(function(){
     var autocomplete = new google.maps.places.Autocomplete((document.getElementById('location_input')),{ types: ['geocode'] });
     google.maps.event.addListener(autocomplete, 'place_changed', function() {
         var place = autocomplete.getPlace();
-        console.log(place.geometry.location.lat());
-        console.log(place.geometry.location.lng());
+        $('#location_lat').val(place.geometry.location.lat());
+        $('#location_lng').val(place.geometry.location.lng());
     });
 
     //Afstand slider
-    $('#range').slider();
+    $('#range').slider({
+        min: 0,
+        max: 500,
+        values: [50],
+        slide: function( event, ui ) {
+            $('#rangekm').val(ui.values[0]);
+        }
+    });
 
 });

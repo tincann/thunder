@@ -10,7 +10,7 @@ block content
             p Wanted
     #content.filters
 
-        form(action='/login/create',method='post')
+        form(action='/', method='post')
 
         #gender
 
@@ -24,13 +24,20 @@ block content
             label(for="radio3") Bi
 
         #age
+        input(type="number", id="age_min", name="age_min" value="25")
+        input(type="number", id="age_max", name="age_max" value="35")
 
         #location.ui-widget
             input(id="location_input", type="text")
             label(for="location_input") Location
+            input(type="hidden", id="location_lat", name="location_lat", value="")
+            input(type="hidden", id="location_lng", name="location_lng", value="")
 
         #range
+        input(type="number", id="rangekm", name="range" value="50")
 
-        input(type='submit', name='next', value='Next')
+        #submit.filters
+            input(type="hidden", name="searchorder_id", value="")
+            input(type='submit', name='next', value='Next')
 
     #footer
