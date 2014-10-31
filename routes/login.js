@@ -5,7 +5,10 @@ var router = express.Router();
 // Toont het loginscherm.
 router.get('/', function(req, res) {
     // Zijn we ingelogd? Dan doorverwijzen naar status.
-    // TODO
+    if (req.session.user) {
+        req.session.last_error = "";
+        res.redirect('/status');
+    }
 
     // Anders ophalen alle accounts die we kennen en aan de view geven voor selectie van een view om mee te werken.
     req.db.FacebookAccounts.find({}, {Alias:1, FacebookId:1}).toArray(
@@ -27,7 +30,7 @@ router.get('/logout', function(req, res) {
 router.post('/select', function (req,res) {
     // Is de meegegeven id bekend?
     var selected_id = parseInt(req.param('fbid', 0), 10);
-    var selected_account = req.db.FacebookAccounts.findOne({FacebookId: selected_id}, function (err, result) {
+    req.db.FacebookAccounts.findOne({FacebookId: selected_id}, function (err, result) {
         if(result === null) {
             // Onbekende account -> terug naar loginpagina.
             req.session.last_error = "Het geselecteerde account is niet gevonden.";
@@ -48,14 +51,14 @@ router.post('/create', function(req,res) {
     var fbtoken = req.param('newfbtoken');
     var fbid = parseInt(req.param('newfbid'), 10);
 
-    if (!fbalias || fbid == Number.NaN || fbid < 0 || !fbtoken) {
+    if (!fbalias || isNaN(fbid) || fbid <= 0 || !fbtoken) {
         // Input is ongeldig, terugsturen naar loginscherm.
         req.session.last_error = "De ingevoerde gegevens zijn ongeldig.";
         req.session.user = null;
         res.redirect('/login');
     } else {
         // Aanmaken nieuw account.
-        req.db.FacebookAccounts.Insert( {FacebookId: fbid, FacebookToken: fbtoken, Alias: fbalias}, function(error, result){
+        req.db.FacebookAccounts.insert( {FacebookId: fbid, FacebookToken: fbtoken, Alias: fbalias}, function(error, result){
             // Fout bij aanmaken account, terugsturen naar loginscherm.
             if (error) {
                 req.session.last_error = "Er was een fout bij het aanmaken van het nieuwe account: " + error.message;
