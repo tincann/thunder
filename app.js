@@ -11,10 +11,9 @@ var users = require('./routes/users');
 var app = express();
 
 //mongodb integratie
-var mongo = require('mongoskin');
-var db = mongo.db("mongodb://php53-dev:27017/thunder-db", {native_parser:true});
+var thunderdb = require('./thunder-db');
 app.use(function(req, res, next){
-    req.db = db;
+    req.db = thunderdb.database;
     next();
 });
 
