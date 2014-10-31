@@ -47,4 +47,15 @@ $(document).ready(function(){
         }
     });
 
+    //submit uitgeschakeld
+    $('#filterform').bind("keyup keypress", function(e) {
+        if($('#location_input').is(":focus")){
+            var code = e.keyCode || e.which;
+            if (code  == 13) {
+                e.preventDefault();
+                return false;
+            }
+        }
+    });
+
 });
