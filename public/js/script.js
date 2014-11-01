@@ -100,16 +100,23 @@ $(document).ready(function(){
 
                         console.log(el);
 
+                        var gender = el.gender;
+                        if(gender == 'm'){
+                            gender = ' Guy';
+                        }else{
+                            gender = ' Girl';
+                        }
+
                         var hide = 'hidden_'+index;
                         var html = '<div style="display: none;" class="match '+hide+'">'
                                     +'<div class="photo_wrap">'
                                         +'<div style="background-image: url('+ el.photo +');" class="photo"></div></div>'
                                     +'<div class="wrap_text">'
                                         +'<div class="text">'
-                                        +'<div>'+ el.name +'</div>'
-                                        +'<div>'+ el.age +'</div>'
+                                        +'<div class="name">'+ el.name + ' | ' + el.age + ' | ' + gender +'</div>'
+                                        //+'<div>'+ el.age + gender +'</div>'
                                         +'<div>'+ el.bio +'</div>'
-                                        +'<div>'+ el.distance +'</div>'
+                                        +'<div>'+ Math.round((el.distance * 1.609344)) +' KM</div>'
                                         +'</div>'
                                         +'<div class="button">'+ el.status +'</div></div>'
                                   +'</div>';

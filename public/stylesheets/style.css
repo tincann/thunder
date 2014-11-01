@@ -447,6 +447,10 @@ a .arrow:hover{
     width: 150px;
     background-image: url("../images/tinderlogo.png");
     background-size: 150px 150px;
+    box-sizing:border-box;
+    -moz-box-sizing:border-box;
+    -webkit-box-sizing:border-box;
+    border: 5px solid #fff;
 }
 
 .wrap_text{
@@ -460,6 +464,7 @@ a .arrow:hover{
     height: 100px;
     float: left;
     overflow: hidden;
+    margin-left: 5px;
 }
 
 .button{
@@ -477,4 +482,9 @@ a .arrow:hover{
 #stats p{
     float: left;
     margin-right: 25px;
+}
+
+.name{
+    font-weight: bold;
+    color: #f15a24;
 }
