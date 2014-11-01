@@ -178,6 +178,7 @@ $(document).ready(function(){
 
     $('#reload').click(function () {
         getAllMatchData();
+        getthestats();
     });
 
     $('#panelbg').click(function () {
@@ -190,6 +191,17 @@ $(document).ready(function(){
             success:function(set){
                 $('#panel, #panelbg').fadeOut();
                 getAllMatchData();
+            }});
+    }
+
+    function getthestats(){
+        $.ajax({
+            url:'/status/getstats?id='+searchId,
+            success:function(stats){
+
+                console.log(stats);
+
+                $('#stats').html(stats);
             }});
     }
 
