@@ -103,6 +103,54 @@ router.get('/getMatchesList', function(req, res) {
 });
 
 
+router.get('/getStats', function(req, res) {
+    // Zijn we wel ingelogd?
+    if (!req.session.user) {
+        req.session.last_error = "";
+        res.status(403).end();
+    }
+
+    var order_id = req.param('id', '');
+    var searchorder = searchService.getSearchOrderById(order_id).then(function (searchorder) {
+        if (!searchorder) {
+            // Ongeldige search order meegegeven.
+            req.session.last_error = "";
+            res.status(404).end();
+        } else {
+            // TODO - checken of dit wel een searchorder is van de ingelogde gebruiker.
+
+            // Berekenen statistieken.
+            var totaal_benaderde_matches = 0;
+            var totaal_openingszinnen = 0;
+            var totaal_aantal_succes = 0;
+            var totaal_aantal_fail = 0;
+
+            searchorder.Matches.forEach(function(el) {
+                    if (el.LikedBack) totaal_openingszinnen++;
+                    if (el.Success === true) totaal_aantal_succes++;
+                    if (el.Success === false) totaal_aantal_fail++;
+                    totaal_benaderde_matches++;
+                });
+            totaal_aantal_succes++;
+            totaal_aantal_succes++;
+            totaal_aantal_fail++;
+            var perc_succes = parseInt(100 * parseFloat(totaal_aantal_succes) / (totaal_aantal_succes + totaal_aantal_fail),10);
+            var perc_fail = parseInt(100* parseFloat(totaal_aantal_fail) / (totaal_aantal_succes + totaal_aantal_fail),10);
+
+            var response_html = '<b>Statistieken:</b><br>' +
+                    'Totaal aantal verstuurde likes: ' + totaal_benaderde_matches + '<br>' +
+                    'Totaal aantal verstuurde openingszinnen: ' + totaal_openingszinnen + '<br>' +
+                    'Aantal keer gescoord: ' + totaal_aantal_succes + ' (' + (isNaN(perc_succes) ? '-': perc_succes)  + ' %)<br>' +
+                    'Aantal keer gefaald: ' + totaal_aantal_fail  + ' (' + (isNaN(perc_fail) ? '-': perc_fail)  + ' %)<br>';
+
+            req.session.last_error = '';
+            res.send(response_html);
+        }
+    }).done();
+});
+
+
+
 router.get('/getMatch', function(req, res) {
     // Zijn we wel ingelogd?
     if (!req.session.user) {
