@@ -177,7 +177,7 @@ input{
 }
 
 #sample{
-    width: 350px;
+    width: 620px;
     margin-top: 25px;
     float: left;
 }
@@ -225,15 +225,37 @@ input{
     margin-top: 50px;
 }
 
+.pickupline{
+    width: 750px;
+}
+
 .line{
-    width: 350px;
+    width: 800px;
     float: left;
     margin-top: 25px;
 }
 
 #pickup{
     margin: 0 auto;
-    width: 350px;
+    width: 800px;
+}
+
+#sample_wrap{
+    width: 800px;
+    height: 50px;
+    overflow: hidden;
+}
+
+#sample_wrap input{
+    width: 50px;
+    float: right;
+    margin-top: 25px;
+}
+
+#sample_wrap p {
+    float: left;
+    margin-top: 20px;
+    margin-right: 20px;
 }
 
 #arrow_wrapper{
