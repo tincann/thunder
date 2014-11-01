@@ -78,11 +78,16 @@ router.get('/getMatchesList', function(req, res) {
                 } else if (el.Success === null && el.Response.length > 0) {
                     status = 'response';
                 }
+
+                var birth_date = new Date(el.UserInfo.birth_date);
+                var age = ~~((Date.now() - birth_date) / (31557600000));
+
                 match_list.push({match_id: el._id,
                     name: el.UserInfo.name,
                     bio: el.UserInfo.bio,
                     photo: el.UserInfo.photos[0].url,
-                    age: 99,
+                    gender: (el.UserInfo.gender == 1) ? 'v' : 'm',
+                    age: age,
                     distance: el.UserInfo.distance_mi * 1.6,
                     status: status});
             });
