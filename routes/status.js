@@ -86,7 +86,7 @@ router.get('/getMatchesList', function(req, res) {
                 var birth_date = new Date(el.UserInfo.birth_date);
                 var age = ~~((Date.now() - birth_date) / (31557600000));
 
-                match_list.push({match_id: el._id,
+                match_list.push({match_id: el.UserInfo._id,
                     name: el.UserInfo.name,
                     bio: el.UserInfo.bio,
                     photo: el.UserInfo.photos[0].url,
@@ -100,7 +100,65 @@ router.get('/getMatchesList', function(req, res) {
             res.json(match_list);
         }
     }).done();
-    
+});
+
+
+router.get('/getMatch', function(req, res) {
+    // Zijn we wel ingelogd?
+    if (!req.session.user) {
+        req.session.last_error = "";
+        res.status(403).end();
+    }
+
+    var order_id = req.param('order_id', '');
+    var match_id = req.param('match_id', '');
+    var searchorder = searchService.getSearchOrderById(order_id).then(function (searchorder) {
+        if (!searchorder) {
+            // Ongeldige searchorderid meegegeven.
+            req.session.last_error = "";
+            res.status(404).end();
+        } else {
+            // TODO - checken of dit wel een searchorder is van de ingelogde gebruiker.
+
+            // Ophalen juiste match binnen de searchorder.
+            var match = null;
+            searchorder.Matches.every ( function (el) {
+                if (el.UserInfo._id == match_id) {
+                    match = el;
+                    return false;
+                }
+                return true;
+            });
+            if (!match) {
+                // Ongeldige matchid meegegeven.
+                req.session.last_error = "";
+                res.status(404).end();
+            }
+
+            // Checken of deze match wel een status 'response' heeft.
+            // TODO - enablen.
+            if (false /*match.Success !== null || match.Response.length == 0*/) {
+                req.session.last_error = "";
+                res.status(404).end();
+            } else {
+                // Teruggeven gegevens van deze match.
+                var birth_date = new Date(match.UserInfo.birth_date);
+                var age = ~~((Date.now() - birth_date) / (31557600000));
+
+                req.session.last_error = '';
+                res.json({order_id: searchorder._id,
+                    match_id: match.UserInfo._id,
+                    name: match.UserInfo.name,
+                    bio: match.UserInfo.bio,
+                    photo: match.UserInfo.photos[0].url,
+                    gender: (match.UserInfo.gender == 1) ? 'v' : 'm',
+                    age: age,
+                    distance: match.UserInfo.distance_mi * 1.6,
+                    responses: match.Response});
+            }
+        }
+    }).done();
+
 });
 
 module.exports = router;
