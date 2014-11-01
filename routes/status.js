@@ -154,7 +154,13 @@ router.get('/getMatch', function(req, res) {
                     gender: (match.UserInfo.gender == 1) ? 'v' : 'm',
                     age: age,
                     distance: match.UserInfo.distance_mi * 1.6,
-                    responses: match.Response});
+                    // TODO
+                    responses: [
+                            'Lorem Ipsum is simply dummy text of the printing and typesetting industry.',
+                            'Nog een zin!!!1 fdjfdh%&^%*%^%^%^',
+                            'Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia, etc.'
+                    ]     });
+                    //responses: match.Response});
             }
         }
     }).done();
