@@ -97,17 +97,27 @@ $(document).ready(function(){
                     $('#matchlist').html('');
                     $('#matchlist').show();
                     $(data).each( function( index, el ) {
+
+                        console.log(el);
+
                         var hide = 'hidden_'+index;
                         var html = '<div style="display: none;" class="match '+hide+'">'
                                     +'<div class="photo_wrap">'
-                                        +'<div class="photo"></div></div>'
+                                        +'<div style="background-image: url('+ el.photo +');" class="photo"></div></div>'
                                     +'<div class="wrap_text">'
-                                        +'<div class="text">'+ el.match_id +'</div>'
+                                        +'<div class="text">'
+                                        +'<div>'+ el.name +'</div>'
+                                        +'<div>'+ el.age +'</div>'
+                                        +'<div>'+ el.bio +'</div>'
+                                        +'<div>'+ el.distance +'</div>'
+                                        +'</div>'
                                         +'<div class="button">'+ el.status +'</div></div>'
                                   +'</div>';
 
+                        //input(type='submit', id="12345" class="submit_btn openmatch", name='select' value='open')
+
                         $('#matchlist').append(html);
-                        $('.'+hide).delay(500*index).fadeIn();
+                        $('.'+hide).delay(150*index).fadeIn();
                     });
                 });
             }
