@@ -4,6 +4,8 @@
 
 $(document).ready(function(){
 
+    var searchId = $('.searchdrop').val();
+
     //geslacht radio buttons
     $('#gender').buttonset();
 
@@ -70,6 +72,50 @@ $(document).ready(function(){
         var id = $(this).attr('id');
         console.log(id);
 
+    });
+
+    //ander zoekopdracht
+    $('.searchdrop').change(function () {
+        searchId = this.value;
+        console.log(searchId);
+
+        /*
+        $.ajax({
+            url:'url??',
+            success:function(data){
+                console.log('succes!');
+        }});
+        */
+
+    });
+
+    function getAllMatchData(){
+        $.ajax({
+            url:'/status/getMatchesList?id=' + searchId,
+            success:function(data){
+                $('#matchlist').fadeOut(function(){
+                    $('#matchlist').html('');
+                    $('#matchlist').show();
+                    $(data).each( function( index, el ) {
+                        var hide = 'hidden_'+index;
+                        var html = '<div style="display: none;" class="match '+hide+'">'
+                                    +'<div class="photo_wrap">'
+                                        +'<div class="photo"></div></div>'
+                                    +'<div class="wrap_text">'
+                                        +'<div class="text">'+ el.match_id +'</div>'
+                                        +'<div class="button">'+ el.status +'</div></div>'
+                                  +'</div>';
+
+                        $('#matchlist').append(html);
+                        $('.'+hide).delay(500*index).fadeIn();
+                    });
+                });
+            }
+        });
+    }
+
+    $('#reload').click(function () {
+        getAllMatchData();
     });
 
 });
