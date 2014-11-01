@@ -304,6 +304,11 @@ input{
     color: #fff;
 }
 
+a .arrow:hover{
+    background-image: url("../images/arrow_white.png");
+    color: #f15a24;
+}
+
 .submit_btn {
     -moz-box-shadow:inset 0px 1px 0px 0px #ffffff;
     -webkit-box-shadow:inset 0px 1px 0px 0px #ffffff;
@@ -391,4 +396,83 @@ input{
     width: 270px;
     position: relative;
     top: -10px;
+}
+
+#dropdown{
+    width: 100%;
+    height: 50px;
+    margin-top: 10px;
+    margin-left: 25px;
+}
+
+#dropdown p{
+    float: left;
+    margin-right: 10px;
+    margin-top: 0;
+}
+
+#dropdown .searchdrop{
+    float: left;
+}
+
+#matchlist{
+    width: 936px;
+    min-height: 50px;
+    height: auto;
+    overflow: hidden;
+    margin: 25px;
+}
+
+.match{
+    width: 300px;
+    height: 150px;
+    margin-right: 10px;
+    margin-bottom: 10px;
+    float: left;
+    border: 1px dotted #f15a24;
+    overflow: hidden;
+}
+
+.photo_wrap{
+    height: 150px;
+    width: 150px;
+    background-image: url("../images/ajax-loader.gif");
+    background-position: center center;
+    background-repeat: no-repeat;
+    float: left;
+}
+
+.photo{
+    height: 150px;
+    width: 150px;
+    background-image: url("../images/tinderlogo.png");
+}
+
+.wrap_text{
+    width: 150px;
+    height: 150px;
+    float: left;
+}
+
+.text{
+    width: 150px;
+    height: 100px;
+    float: left;
+}
+
+.button{
+    width: 140px;
+    height: 25px;
+    float: left;
+}
+
+#stats{
+    height: 25px;
+    width: 900px;
+    margin-left: 25px;
+}
+
+#stats p{
+    float: left;
+    margin-right: 25px;
 }
