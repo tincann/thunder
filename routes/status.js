@@ -75,8 +75,12 @@ router.get('/getMatchesList', function(req, res) {
                     status = 'success';
                 } else if (el.Success === false) {
                     status = 'fail';
-                } else if (el.Success === null && el.Response.length > 0) {
-                    status = 'response';
+                } else if (el.Success === null) {
+                    if (el.Response.length > 0) {
+                        status = 'response';
+                    } else if (el.Response.LikedBack === true) {
+                        status = 'waiting';
+                    }
                 }
 
                 var birth_date = new Date(el.UserInfo.birth_date);
