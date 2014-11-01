@@ -446,6 +446,7 @@ a .arrow:hover{
     height: 150px;
     width: 150px;
     background-image: url("../images/tinderlogo.png");
+    background-size: 150px 150px;
 }
 
 .wrap_text{
@@ -458,6 +459,7 @@ a .arrow:hover{
     width: 150px;
     height: 100px;
     float: left;
+    overflow: hidden;
 }
 
 .button{
