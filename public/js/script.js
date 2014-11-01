@@ -198,9 +198,6 @@ $(document).ready(function(){
         $.ajax({
             url:'/status/getstats?id='+searchId,
             success:function(stats){
-
-                console.log(stats);
-
                 $('#stats').html(stats);
             }});
     }
