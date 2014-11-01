@@ -26,22 +26,23 @@ SearchOrderBot.prototype.loop = function() {
         .fail(function(error){
             console.log(error);
         }).done(function(){
-            this.status = STATUS.IDLE;
+            console.log('done');
+            self.status = STATUS.IDLE;
         });
     }
 };
 
 SearchOrderBot.prototype.start = function(pollInterval) {
-    //this.interval = setInterval(this.loop.bind(this), pollInterval || 50);
-    this.loop();
+    this.interval = setInterval(this.loop.bind(this), pollInterval || 1000);
+    // this.loop();
 };
 
 SearchOrderBot.prototype.dequeueOrder = function() {
     console.log('dequeueing order');
+    this.status = STATUS.RUNNING;
     return SearchService.getFirstReadySearchOrder().then(function(searchOrder){
         if(searchOrder){
             console.log('order found:', searchOrder);
-            this.status = STATUS.RUNNING;
             return searchOrder;
         }else{
             throw new Error("No order found");
@@ -56,17 +57,19 @@ SearchOrderBot.prototype.processOrder = function(order){
         console.log('status running set on', order._id);
         return FacebookService.getByFbId(order.FacebookAccountId);
     }).then(function(account){
-        return TinderService.authorize(account).then(function(){
-            return TinderService.setPosition('4.897156', '52.368368'); //todo niet hardcoden
-        }).then(function(){
-            return TinderService.getRecommendations(order.FacebookAccountId, order.SampleSize);
-        }).then(function(matches){
-            return MatchService.insertMatches(order._id, matches).then(function(){
-                return TinderService.likeBatch(order._id, matches);
-            });
-        }).fail(function(error){
-            console.log('echt iets misgegaan', error);
+        return TinderService.authorize(account);
+    }).then(function(){
+        return TinderService.setPosition('4.897156', '52.368368'); //todo niet hardcoden
+    }).then(function(){
+        return TinderService.getRecommendations(order.FacebookAccountId, order.SampleSize);
+    }).then(function(matches){
+        return MatchService.insertMatches(order._id, matches).then(function(){
+            return TinderService.likeBatch(order._id, matches);
         });
+    }).then(function(){
+        return SearchService.completeSearchOrder(order._id);
+    }).fail(function(error){
+        console.log('echt iets misgegaan', error);
     });
 };
 

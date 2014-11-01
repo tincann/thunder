@@ -1,5 +1,6 @@
 var q = require('q');
 var tinder = require('tinderjs');
+var MatchService = require('../services/MatchService');
 
 var db = require('../thunder-db').database;
 var TinderMatch = require('../models/TinderMatch');
@@ -64,7 +65,7 @@ TinderService.prototype.likeBatch = function(orderId, matches) {
 
             console.log('likedata:', data);
             //andere user heeft ons ook geliked
-            if(data.matched){
+            if(data && data.match){
                 console.log('You were liked back by:', match.TinderId);
                 return MatchService.setMatched(orderId, match.TinderId);
             }
@@ -75,15 +76,18 @@ TinderService.prototype.likeBatch = function(orderId, matches) {
     return q.all(defereds);
 };
 
+TinderService.prototype.sendMessage = function(orderId, tinderId, message) {
+    var defered = q.defer();
+
+    
+
+    return defered.promise;
+};
+
 
 TinderService.prototype.getUpdates = function() {
     var defered = q.defer();
-    this.client.getUpdates(function(updates){
-        if(updates){
-            console.log('received updates:', updates);
-        }else{
-            console.log('received no updates');
-        }
+    this.client.getUpdates(function(error,updates){
         defered.resolve(updates);
     });
     return defered.promise;

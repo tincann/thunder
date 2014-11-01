@@ -61,6 +61,20 @@ SearchService.prototype.getRunningSearchOrders = function() {
     return defered.promise;
 };
 
+SearchService.prototype.getCompletedSearchOrders = function() {
+    var defered = q.defer();
+    db.SearchOrders.find({ Status: 'completed'}).toArray(function(error, searchOrders){
+        if(error){
+            console.log(error);
+            defered.reject(error);
+        }else{
+            console.log(searchOrders);
+            defered.resolve(MapSearchOrders(searchOrders));
+        }
+    });
+    return defered.promise;
+};
+
 SearchService.prototype.getFirstReadySearchOrder = function() {
     var defered = q.defer();
     db.SearchOrders.findOne({ Status: 'waiting', 'MatchCriteria.Complete': 1 }, function(error, result){
@@ -134,6 +148,22 @@ SearchService.prototype.updateSearchOrder = function(id, properties){
         }else{
             console.log('searchorder update failed:', error);
             defered.reject(error);
+        }
+    });
+
+    return defered.promise;
+};
+
+SearchService.prototype.completeSearchOrder = function(orderId) {
+    var defered = q.defer();
+    console.log('completing search order:', orderId);
+    db.SearchOrders.update({_id: orderId}, { $set: { Status: 'completed'} }, function(error, searchOrder){
+        if(error){
+            console.log('can\'t complete order:', error);
+            defered.reject(error);
+        }else{
+            console.log(searchOrder);
+            defered.resolve(searchOrder);
         }
     });
 
