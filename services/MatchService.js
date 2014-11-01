@@ -20,18 +20,26 @@ MatchService.prototype.insertMatches = function(orderId, matches) {
     return defered.promise;
 };
 
-//Als andere persoon jou ook een like geeft dan is er een match!
-MatchService.prototype.setMatched = function(tinderId) {
+MatchService.prototype.setMatched = function(orderId, tinderId) {
+    return this.updateMatch(orderId, tinderId, {
+        'Matches.$.Matched': true
+    });
+};
+
+MatchService.prototype.updateMatch = function(orderId, tinderId, fields) {
     var defered = q.defer();
-    db.TinderMatches.update(
-        { TinderId: match.TinderId },
-        { $set: { matched: true }
+    db.SearchOrders.update(
+        { 
+            orderId: orderId,
+            'Matches.TinderId': tinderId //lelijk #hack 'Matches.$field'
+         },
+        { $set: fields
     }, function(error){
         if(error){
             defered.reject(error);
-            return;
+        }else{
+            defered.resolve();
         }
-        defered.resolve();
     });
     return defered.promise;
 };

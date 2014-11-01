@@ -13,9 +13,8 @@ block content
         #dropdown
             p Change search
             select(name="selectsearch" class="searchdrop")
-                option(value="1") option 1
-                option(value="2") option 2
-                option(value="3") option 3
+                for result in searchorders
+                    option(value="#{result.order_id}") #{result.val}
 
         #stats
             p Reload stats

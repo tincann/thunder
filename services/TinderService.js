@@ -34,44 +34,45 @@ TinderService.prototype.getRecommendations = function(facebookAccountId, sampleS
             if(recommendations){
                 console.log('matches found:', recommendations.length);
                 var matches = recommendations.map(function(rec){
-                    return new TinderMatch(facebookAccountId, rec);
+                    return new TinderMatch(rec);
                 });
-                defered.resolve(recommendations);
+                defered.resolve(matches);
             }else{
                 console.log('no recommendation found :(');
-                defered.reject();
+                    defered.reject();
+                }
+            }else{
+                defered.reject(error);
             }
-        }else{
-            defered.reject(error);
-        }
-    });
+        });
     return defered.promise;
 };
 
 
-TinderService.prototype.likeBatch = function(matches) {
+TinderService.prototype.likeBatch = function(orderId, matches) {
     var defereds = [];
-    for(var i  = 0; i < matches.length; i++){
+    var self = this;
+    matches.forEach(function(match){
         var defered = q.defer();
-        var match = matches[i];
-
-        this.client.like(match.TinderId, function(error, data){
+        console.log('liking match:', match.TinderId);
+        self.client.like(match.TinderId, function(error, data){
             if(error){
                 console.log('liking match failed:', error);
-                defered.resolve(); //anders falen alle andere matches
+                defered.resolve(); //resolve, anders falen alle andere matches
                 return;
             }
 
+            console.log('likedata:', data);
             //andere user heeft ons ook geliked
             if(data.matched){
                 console.log('You were liked back by:', match.TinderId);
-                return MatchService.setMatch(match.TinderId);
+                return MatchService.setMatched(orderId, match.TinderId);
             }
             defered.resolve();
         });
         defereds.push(defered.promise);
-    }
-    q.all(defereds);
+    });
+    return q.all(defereds);
 };
 
 

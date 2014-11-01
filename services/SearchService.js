@@ -97,7 +97,6 @@ SearchService.prototype.createSearchOrder = function(properties){
         properties.pickupLines,
         properties.sampleSize);
 
-    searchOrder.setClient(TinderService.createInstance());
 
     db.SearchOrders.insert(searchOrder, function(error, order){
         var mappedOrder;
