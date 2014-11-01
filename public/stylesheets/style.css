@@ -554,6 +554,11 @@ a .arrow:hover{
     font-size: 20px;
 }
 
+.pos:hover, .neg:hover{
+    text-decoration: underline;
+    cursor: pointer;
+}
+
 .neg{
     color: red;
     float: right;
