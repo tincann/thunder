@@ -146,7 +146,8 @@ router.get('/getMatch', function(req, res) {
                 var age = ~~((Date.now() - birth_date) / (31557600000));
 
                 req.session.last_error = '';
-                res.json({match_id: match._id,
+                res.json({order_id: searchorder._id,
+                    match_id: match.UserInfo._id,
                     name: match.UserInfo.name,
                     bio: match.UserInfo.bio,
                     photo: match.UserInfo.photos[0].url,
