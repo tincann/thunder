@@ -35,7 +35,7 @@ router.get('/', function (req, res) {
                 var genders = {'m': 'man', 'v': 'vrouw', 'b': 'bi'};
                 searchorders.forEach(function (el) {
                     var desc = genders[el.MatchCriteria.Gender] + ' - ' + el.MatchCriteria.Age.min + ' tot ' +
-                        el.MatchCriteria.Age.max + ' - ' + el.MatchCriteria.range + ' km van ' + el.MatchCriteria.City;
+                        el.MatchCriteria.Age.max + ' - ' + el.MatchCriteria.Range + ' km van ' + el.MatchCriteria.City;
                     orders.push({order_id: el._id, val: desc});
                 });
 

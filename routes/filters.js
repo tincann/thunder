@@ -34,6 +34,7 @@ router.get('/', function (req, res) {
                     location_lat: order_openstaand.MatchCriteria.Location ? (order_openstaand.MatchCriteria.Location.lat ? order_openstaand.MatchCriteria.Location.lat : null) : null,
                     location_lng: order_openstaand.MatchCriteria.Location ? (order_openstaand.MatchCriteria.Location.long ? order_openstaand.MatchCriteria.Location.long : null) : null,
                     range: order_openstaand.MatchCriteria.Range ? order_openstaand.MatchCriteria.Range : null,
+                    city: order_openstaand.MatchCriteria.City ? order_openstaand.MatchCriteria.City : null,
                     session: req.session} );
             } else {
                 // Wel orders, maar geen openstaande, dus we verwijzen door naar het status scherm.
@@ -47,7 +48,7 @@ router.get('/', function (req, res) {
     }).fail(function(error) {
         // TODO
         res.render('filters', {session: req.session});
-    });
+    }).done();
 });
 
 /* Opslaan ingevulde waarden. */
@@ -64,6 +65,7 @@ router.post('/', function(req, res) {
     var age_max = parseInt(req.param('age_max', 0), 10);
     var location_lat = parseFloat(req.param('location_lat', 0.0));
     var location_long = parseFloat(req.param('location_lng', 0.0));
+    var city = req.param('city');
     var range = parseInt(req.param('range',0), 10);
     var searchorder_id = req.param('searchorder_id', '');
 
@@ -86,8 +88,11 @@ router.post('/', function(req, res) {
     if (isNaN(location_long)) {
         validation_errors.push("<li>De opgegeven location_lng is ongeldig.</li>");
     }
+    if (!city) {
+        validation_errors.push("<li>De opgegeven stad is ongeldig.</li>");
+    }
     if (isNaN(range) || range <= 0) {
-        validation_errors.push("<li>Het opgegeven bereik is ongeldig.</li>");
+        validation_errors.push("<li>De opgegeven afstand is ongeldig.</li>");
     }
 
     // Nu ophalen eventuele meegegeven searchorder.
@@ -105,6 +110,7 @@ router.post('/', function(req, res) {
                     age_max: age_max,
                     location_lat: location_lat,
                     location_lng: location_long,
+                    city: city,
                     range: range,
                     session: req.session});
                 res.end();
@@ -113,7 +119,7 @@ router.post('/', function(req, res) {
 
             if (searchorder) {
                 // Bestaande searchorder aanpassen.
-                var match_crit = new MatchCriteria(gender, age_min, age_max, location_lat, location_long, range, searchorder.MatchCriteria.Complete);
+                var match_crit = new MatchCriteria(gender, age_min, age_max, location_lat, location_long, city, range, searchorder.MatchCriteria.Complete);
 
                 searchService.updateSearchOrder( searchorder._id, {
                     facebookAccountId: req.session.user.fbid,
@@ -134,13 +140,14 @@ router.post('/', function(req, res) {
                         age_max: age_max,
                         location_lat: location_lat,
                         location_lng: location_long,
+                        city: city,
                         range: range,
                         session: req.session});
                     res.end();
                 });
             } else {
                 // Nieuwe searchorder aanmaken.
-                var match_crit = new MatchCriteria(gender, age_min, age_max, location_lat, location_long, range, 0);
+                var match_crit = new MatchCriteria(gender, age_min, age_max, location_lat, location_long, city, range, 0);
 
                  searchService.createSearchOrder( {
                     facebookAccountId: req.session.user.fbid,
@@ -159,6 +166,7 @@ router.post('/', function(req, res) {
                              age_max: age_max,
                              location_lat: location_lat,
                              location_lng: location_long,
+                             city: city,
                              range: range,
                              session: req.session});
                  });
