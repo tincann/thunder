@@ -62,7 +62,7 @@ SearchOrderBot.prototype.processOrder = function(order){
             return TinderService.getRecommendations(order.FacebookAccountId, order.SampleSize);
         }).then(function(matches){
             return MatchService.insertMatches(order._id, matches).then(function(){
-                return MatchService.likeBatch(matches);
+                return TinderService.likeBatch(order._id, matches);
             });
         }).fail(function(error){
             console.log('echt iets misgegaan', error);
