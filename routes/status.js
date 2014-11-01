@@ -36,7 +36,7 @@ router.get('/', function (req, res) {
                 searchorders.forEach(function (el) {
                     var desc = genders[el.MatchCriteria.Gender] + ' - ' + el.MatchCriteria.Age.min + ' tot ' +
                         el.MatchCriteria.Age.max + ' - ' + el.MatchCriteria.range + ' km van ' + el.MatchCriteria.City;
-                    orders.push({id: el._id, val: desc});
+                    orders.push({order_id: el._id, val: desc});
                 });
 
                 req.session.last_error = "";
@@ -44,10 +44,31 @@ router.get('/', function (req, res) {
             }
         }
     }).fail(function (error) {
-        req.session.last_error('Fout bij ophalen searchorders: ' + error.message);
+        req.session.last_error = 'Fout bij ophalen searchorders: ' + error.message;
         res.render('status', { session: req.session });
     }).done();
 
+});
+
+router.get('/getMatchesList', function(req, res) {
+    // Zijn we wel ingelogd?
+    if (!req.session.user) {
+        req.session.last_error = "";
+        res.redirect('/login');
+    }
+
+    var order_id = parseInt(req.param('id', ''), 10);
+    if (!order_id) {
+        // Ongeldige search order meegegeven.
+        req.session.last_error = 'Ongeldige searchorder meegegeven.';
+        res.render('status', { session: req.session });
+    }
+    // TODO - checken of dit wel een searchorder is van de ingelogde gebruiker.
+    console.log(order_id);
+
+    var temp = {match_id: 'fdfdfd434343', status: 'success', userinfo: {'name': 'Daniel', 'gender': 'm', 'age': 38}};
+    req.session.last_error = '';
+    res.json([temp, temp])
 });
 
 module.exports = router;
