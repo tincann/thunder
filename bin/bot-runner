@@ -1,0 +1,5 @@
+var SearchOrderBot = require('../bot/SearchOrderBot');
+var SearchUpdateBot = require('../bot/SearchUpdateBot');
+
+// SearchUpdateBot.start();
+SearchOrderBot.start();

@@ -6,25 +6,18 @@ function MatchService(){
 
 }
 
-MatchService.prototype.insertMatches = function(facebookAccountId, matches) {
-    var defereds = [];
-
-    for(var i = 0; i < matches.length; i++){
-        var defered = q.defer();
-
-        var matchInfo = matches[i];
-        var tinderMatch = new TinderMatch(facebookAccountId, matchInfo);
-        db.TinderMatches.insert(tinderMatch, function(error, match){
-            if(!error){
-                defered.resolve(match[0]);
-            }else{
-                defered.reject(error);
-            }
-        });
-        defereds.push(defered.promise);
-    }
-
-    return q.all(defereds).then(function(){ return matches});
+MatchService.prototype.insertMatches = function(orderId, matches) {
+    var defered = q.defer();
+    console.log('inserting matches');
+    db.SearchOrders.update({ _id: orderId }, { $pushAll: { Matches: matches }}, function(error, matches){
+        if(!error){
+            console.log('response:', matches);
+            defered.resolve(matches);
+        }else{
+            defered.reject(error);
+        }
+    });
+    return defered.promise;
 };
 
 //Als andere persoon jou ook een like geeft dan is er een match!

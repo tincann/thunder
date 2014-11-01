@@ -61,9 +61,29 @@ SearchService.prototype.getRunningSearchOrders = function() {
     return defered.promise;
 };
 
+SearchService.prototype.getFirstReadySearchOrder = function() {
+    var defered = q.defer();
+    db.SearchOrders.findOne({ Status: 'waiting', 'MatchCriteria.Complete': 1 }, function(error, result){
+        if(error){
+            defered.reject(error);
+        }else if(result){
+            defered.resolve(MapSearchOrder(result));
+        }else{
+            defered.reject('no ready search order');
+        }
+    });
+    return defered.promise;
+};
+
 SearchService.prototype.updateSearchOrderStatus = function(id, status) {
     var defered = q.defer();
-    db.SearchOrders.update({});
+    db.SearchOrders.update({ _id: id}, { $set: { Status: status } }, function(error, searchOrder){
+        if(error){
+            defered.reject(error);
+        }else{
+            defered.resolve(searchOrder);
+        }
+    });
 
     return defered.promise;
 };
@@ -76,6 +96,8 @@ SearchService.prototype.createSearchOrder = function(properties){
         properties.matchCriteria, 
         properties.pickupLines,
         properties.sampleSize);
+
+    searchOrder.setClient(TinderService.createInstance());
 
     db.SearchOrders.insert(searchOrder, function(error, order){
         var mappedOrder;

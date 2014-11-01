@@ -1,18 +1,9 @@
 #!/usr/bin/env node
 var debug = require('debug')('thunder');
 var app = require('../app');
-var SearchOrderBot = require('../bot/SearchOrderBot');
-var SearchUpdateBot = require('../bot/SearchUpdateBot');
 
 app.set('port', process.env.PORT || 3000);
 
 var server = app.listen(app.get('port'), function() {
   debug('Express server listening on port ' + server.address().port);
-});
-
-SearchOrderBot.start();
-SearchUpdateBot.start();
-
-process.on('uncaughtException', function(error){
-    console.log('FacebookToken expired (probably)', error);
 });

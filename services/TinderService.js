@@ -88,7 +88,7 @@ TinderService.prototype.getUpdates = function() {
     return defered.promise;
 };
 
-TinderService.prototype.cloneService = function() {
+TinderService.prototype.createInstance = function() {
     return new TinderService();
 };
 
