@@ -22,12 +22,27 @@ MatchService.prototype.insertMatches = function(orderId, matches) {
 
 MatchService.prototype.setMatched = function(orderId, tinderId) {
     return this.updateMatch(orderId, tinderId, {
-        'Matches.$.Matched': true
+        'Matches.$.Liked': true,
+        'Matches.$.LikedBack': true
+    });
+};
+
+MatchService.prototype.setLiked = function(orderId, tinderId) {
+    console.log('setting like on', tinderId);
+    return this.updateMatch(orderId, tinderId, {
+        'Matches.$.Liked': true 
+    });
+};
+
+MatchService.prototype.setLikedBack = function(orderId, tinderId) {
+    return this.updateMatch(orderId, tinderId, {
+        'Matches.$.LikedBack': true
     });
 };
 
 MatchService.prototype.updateMatch = function(orderId, tinderId, fields) {
     var defered = q.defer();
+    console.log('updating match', fields);
     db.SearchOrders.update(
         { 
             orderId: orderId,

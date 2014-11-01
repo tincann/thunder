@@ -545,3 +545,24 @@ a .arrow:hover{
 .response_text{
     margin: 10px;
 }
+
+.pos{
+    color: green;
+    float: left;
+    margin-left: 25px;
+    font-weight: bold;
+    font-size: 20px;
+}
+
+.pos:hover, .neg:hover{
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+.neg{
+    color: red;
+    float: right;
+    margin-right: 25px;
+    font-weight: bold;
+    font-size: 20px;
+}
