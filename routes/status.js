@@ -7,6 +7,7 @@ var router = express.Router();
 router.get('/', function (req, res) {
     // Zijn we wel ingelogd?
     if (!req.session.user) {
+        req.session.last_error = "";
         res.redirect('/login');
     }
 
@@ -17,26 +18,21 @@ router.get('/', function (req, res) {
             req.session.last_error = "";
             res.redirect('/filters');
         } else {
-            // Is er minimaal één afgerond?
-            var completed_searchorder = false;
+            // Zijn alle searchorders afgerond?
+            var all_completed = true;
             searchorders.forEach(function (el) {
-                if (el.MatchCriteria.Complete == 1) { completed_searchorder = true;}
+                if (el.MatchCriteria.Complete !== 1) { all_completed = false;}
             });
 
-            if (!completed_searchorder) {
-                // Geen afgeronde searchorder, door naar het filterscherm.
+            if (!all_completed) {
+                // Er is een openstaande searchorder, door naar het filterscherm.
                 req.session.last_error = "";
                 res.redirect('/filters');
             } else {
-
-                // Is er minimaal één afgerond?
-                var completed_searchorder = false;
-                searchorders.forEach(function (el) {
-                    if (el.MatchCriteria.Complete == 1) { completed_searchorder = true;}
-                });
-
+                // Alle searchorders afgerond, we kunnen het statusscherm tonen.
+                req.session.last_error = "";
                 res.render('status', { session: req.session});
-                // Toon statusoverzicht
+
                 // TODO
                 /*return MatchService.getMatchesForFbId(req.session.user.fbid).then(function(matches){
                     res.render('status', { session: req.session, matches: matches });

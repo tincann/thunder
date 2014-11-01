@@ -8,6 +8,7 @@ var router = express.Router();
 router.get('/', function (req, res) {
     // Zijn we wel ingelogd?
     if (!req.session.user) {
+        req.session.last_error = "";
         res.redirect('/login');
     }
 
@@ -36,6 +37,7 @@ router.get('/', function (req, res) {
                     session: req.session} );
             } else {
                 // Wel orders, maar geen openstaande, dus we verwijzen door naar het status scherm.
+                req.session.last_error = "";
                 res.redirect('/status');
             }
         } else {
@@ -52,6 +54,7 @@ router.get('/', function (req, res) {
 router.post('/', function(req, res) {
     // Zijn we wel ingelogd?
     if (!req.session.user) {
+        req.session.last_error = "";
         res.redirect('/login');
     }
 

@@ -7,25 +7,44 @@ var router = express.Router();
 router.get('/', function (req, res) {
     // Zijn we wel ingelogd?
     if (!req.session.user) {
+        req.session.last_error = "";
         res.redirect('/login');
     }
 
-    //  Haal de eerste search order op voor dit account die momenteel nog aangemaakt wordt.
-    searchService.getPendingSearchOrderByFaceBookId(req.session.user.fbid).then(function(existing_order) {
-            if (existing_order) {
-                // Params uit de search order uit de record halen.
-                res.render('pickuplines', {searchorder_id: existing_order._id,
-                    pickup_1: existing_order.PickupLines[0] ? existing_order.PickupLines[0] : '',
-                    pickup_2: existing_order.PickupLines[1] ? existing_order.PickupLines[1] : '',
-                    pickup_3: existing_order.PickupLines[2] ? existing_order.PickupLines[2] : '',
-                    samplesize: existing_order.SampleSize,
+    // Heeft deze account orders?
+    searchService.getAllSearchOrdersByFaceBookId(req.session.user.fbid).then(function(orders) {
+        if (orders && orders.length > 0) {
+            // Er zijn orders, zoek de eerste openstaande order.
+            var order_openstaand = null;
+            orders.every(function(el) {
+                if (el.MatchCriteria.Complete == 0) {
+                    order_openstaand = el; return false;
+                } else {
+                    return true;
+                }
+            });
+
+            if (order_openstaand) {
+                // Er is een openstaande order, we geven de params aan de front-end.
+                res.render('pickuplines', {searchorder_id: order_openstaand._id,
+                    pickup_1: order_openstaand.PickupLines[0] ? order_openstaand.PickupLines[0] : '',
+                    pickup_2: order_openstaand.PickupLines[1] ? order_openstaand.PickupLines[1] : '',
+                    pickup_3: order_openstaand.PickupLines[2] ? order_openstaand.PickupLines[2] : '',
+                    samplesize: order_openstaand.SampleSize,
                     session: req.session});
             } else {
-                // Geen openstaande order, gewoon leeg scherm laten zien.
-                res.render('pickuplines', {session: req.session});
+                // Wel orders, maar geen openstaande, dus we verwijzen door naar het status scherm.
+                req.session.last_error = "";
+                res.redirect('/status');
             }
+        } else {
+            // Geen orders, we laten een leeg scherm zien.
+            res.render('pickuplines', {session: req.session});
         }
-    );
+    }).fail(function(error) {
+        // TODO
+        res.render('pickuplines', {session: req.session});
+    });
 });
 
 /* Opslaan ingevulde waarden. */

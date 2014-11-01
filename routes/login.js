@@ -23,6 +23,7 @@ router.get('/logout', function(req, res) {
     req.session.last_error = "";
     req.session.user = null;
 
+    req.session.last_error = "U bent uitgelogd.";
     res.redirect('/');
 });
 
