@@ -97,9 +97,6 @@ $(document).ready(function(){
                     $('#matchlist').html('');
                     $('#matchlist').show();
                     $(data).each( function( index, el ) {
-
-                        console.log(el);
-
                         var gender = el.gender;
                         if(gender == 'm'){
                             gender = ' Guy';
@@ -118,12 +115,43 @@ $(document).ready(function(){
                                         +'<div>'+ el.bio +'</div>'
                                         +'<div>'+ Math.round((el.distance * 1.609344)) +' KM</div>'
                                         +'</div>'
-                                        +'<div class="button">Status: <a href="#">'+ el.status +'</a></div></div>'
+                                        +'<div class="button"><div id="'+el.match_id+'" class="getstatus">Status: '+ el.status +'</div></div></div>'
                                   +'</div>';
 
                         $('#matchlist').append(html);
                         $('.'+hide).delay(150*index).fadeIn();
                     });
+
+                    $('.getstatus').click(function () {
+                        var id = $(this).attr('id');
+                        $('#panel, #panelbg').fadeIn();
+                        $.ajax({
+                            url:'/status/getmatch?order_id='+searchId+'&match_id='+id,
+                            success:function(data){
+                                console.log(data);
+
+
+                                var html_match = '<div class="match">'
+                                    +'<div class="photo_wrap">'
+                                    +'<div style="background-image: url('+ data.photo +');" class="photo"></div></div>'
+                                    +'<div class="wrap_text">'
+                                    +'<div class="text">'
+                                    +'<div class="name">'+ data.name + ' | ' + data.age + ' | ' + data.gender +'</div>'
+                                    +'<div class="bio">'+ data.bio +'</div>'
+                                    +'<div>'+ Math.round((data.distance * 1.609344)) +' KM</div>'
+                                    +'</div>'
+                                    +'<div class="button">Status: '+ data.status +'</div></div>'
+                                    +'</div>'
+                                    +'<div class="text_response">text</div>'
+                                    +'<div class="knop_response">Knoppen</div>';
+
+                                $('#panel').html(html_match);
+
+                            }
+                        });
+
+                    });
+
                 });
             }
         });
@@ -133,4 +161,20 @@ $(document).ready(function(){
         getAllMatchData();
     });
 
+    $('#panelbg').click(function () {
+        $('#panel, #panelbg').fadeOut();
+    });
+
 });
+
+/*
+age: 22
+bio: "Slide slide slide. If we match, you matched a cow. Psychology/traveling/guitar/friends/food."
+distance: 52.800000000000004
+gender: "m"
+match_id: "5251dfbe02233e53560004c2"
+name: "René"
+order_id: "5454aa65fbf120f01e252e81"
+photo: "http://images.gotinder.com/5251dfbe02233e53560004c2/b184457b-6c2a-4071-a99f-b6cda9d0ad39.jpg"
+responses
+    */
