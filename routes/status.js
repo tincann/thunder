@@ -54,21 +54,33 @@ router.get('/getMatchesList', function(req, res) {
     // Zijn we wel ingelogd?
     if (!req.session.user) {
         req.session.last_error = "";
-        res.redirect('/login');
+        res.status(403).end();
     }
 
-    var order_id = parseInt(req.param('id', ''), 10);
-    if (!order_id) {
-        // Ongeldige search order meegegeven.
-        req.session.last_error = 'Ongeldige searchorder meegegeven.';
-        res.render('status', { session: req.session });
-    }
-    // TODO - checken of dit wel een searchorder is van de ingelogde gebruiker.
-    console.log(order_id);
+    var order_id = req.param('id', '');
+    var searchorder = searchService.getSearchOrderById(order_id).then(function (searchorder) {
+            if (!searchorder) {
+                // Ongeldige search order meegegeven.
+                req.session.last_error = "";
+                res.status(404).end();
+            } else {
+                // TODO - checken of dit wel een searchorder is van de ingelogde gebruiker.
 
-    var temp = {match_id: 'fdfdfd434343', status: 'success', userinfo: {'name': 'Daniel', 'gender': 'm', 'age': 38}};
-    req.session.last_error = '';
-    res.json([temp, temp])
+                // Ophalen alle TinderMatches.
+                var match_list = [];
+                searchorder.Matches.forEach(function(el) {
+                    match_list.push({match_id: el._id});
+                });
+               /* console.log(searchorder.Matches[0]);
+                res.end();
+                return;*/
+                // Doorlopen en response vullen.
+
+                var temp = {match_id: 'fdfdfd434343', status: 'success', userinfo: {'name': 'Daniel', 'gender': 'm', 'age': 38}};
+                req.session.last_error = '';
+                res.json([temp, temp]);
+            }
+        }).done();
 });
 
 module.exports = router;
