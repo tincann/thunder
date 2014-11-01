@@ -58,9 +58,18 @@ $(document).ready(function(){
         }
     });
 
+    //label ook aanklikbaar
     $('#loginlist p').click(function(){
         var select = $(this).prev();
         select.trigger('click');
+    });
+
+    //open match informatie
+    $('.openmatch').click(function(){
+
+        var id = $(this).attr('id');
+        console.log(id);
+
     });
 
 });
