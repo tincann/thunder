@@ -54,21 +54,198 @@ router.get('/getMatchesList', function(req, res) {
     // Zijn we wel ingelogd?
     if (!req.session.user) {
         req.session.last_error = "";
-        res.redirect('/login');
+        res.status(403).end();
     }
 
-    var order_id = parseInt(req.param('id', ''), 10);
-    if (!order_id) {
-        // Ongeldige search order meegegeven.
-        req.session.last_error = 'Ongeldige searchorder meegegeven.';
-        res.render('status', { session: req.session });
-    }
-    // TODO - checken of dit wel een searchorder is van de ingelogde gebruiker.
-    console.log(order_id);
+    var order_id = req.param('id', '');
+    var searchorder = searchService.getSearchOrderById(order_id).then(function (searchorder) {
+        if (!searchorder) {
+            // Ongeldige search order meegegeven.
+            req.session.last_error = "";
+            res.status(404).end();
+        } else {
+            // TODO - checken of dit wel een searchorder is van de ingelogde gebruiker.
 
-    var temp = {match_id: 'fdfdfd434343', status: 'success', userinfo: {'name': 'Daniel', 'gender': 'm', 'age': 38}};
-    req.session.last_error = '';
-    res.json([temp, temp])
+            // Ophalen alle TinderMatches en response vullen.
+            var match_list = [];
+
+            searchorder.Matches.forEach(function(el) {
+                var status = 'unknown';
+                if (el.Success === true) {
+                    status = 'success';
+                } else if (el.Success === false) {
+                    status = 'fail';
+                } else if (el.Success === null) {
+                    if (el.Response.length > 0) {
+                        status = 'response';
+                    } else if (el.Response.LikedBack === true) {
+                        status = 'waiting';
+                    }
+                }
+
+                var birth_date = new Date(el.UserInfo.birth_date);
+                var age = ~~((Date.now() - birth_date) / (31557600000));
+
+                match_list.push({match_id: el.UserInfo._id,
+                    name: el.UserInfo.name,
+                    bio: el.UserInfo.bio,
+                    photo: el.UserInfo.photos[0].url,
+                    gender: (el.UserInfo.gender == 1) ? 'v' : 'm',
+                    age: age,
+                    distance: el.UserInfo.distance_mi * 1.6,
+                    status: status});
+            });
+
+            req.session.last_error = '';
+            res.json(match_list);
+        }
+    }).done();
 });
+
+
+router.get('/getMatch', function(req, res) {
+    // Zijn we wel ingelogd?
+    if (!req.session.user) {
+        req.session.last_error = "";
+        res.status(403).end();
+    }
+
+    var order_id = req.param('order_id', '');
+    var match_id = req.param('match_id', '');
+    var searchorder = searchService.getSearchOrderById(order_id).then(function (searchorder) {
+        if (!searchorder) {
+            // Ongeldige searchorderid meegegeven.
+            req.session.last_error = "";
+            res.status(404).end();
+        } else {
+            // TODO - checken of dit wel een searchorder is van de ingelogde gebruiker.
+
+            // Ophalen juiste match binnen de searchorder.
+            var match = null;
+            searchorder.Matches.every ( function (el) {
+                if (el.UserInfo._id == match_id) {
+                    match = el;
+                    return false;
+                }
+                return true;
+            });
+            if (!match) {
+                // Ongeldige matchid meegegeven.
+                req.session.last_error = "";
+                res.status(404).end();
+            }
+
+            // Checken of deze match wel een status 'response' heeft.
+            // TODO - enablen.
+            if (false /*match.Success !== null || match.Response.length == 0*/) {
+                req.session.last_error = "";
+                res.status(404).end();
+            } else {
+                // Teruggeven gegevens van deze match.
+                var birth_date = new Date(match.UserInfo.birth_date);
+                var age = ~~((Date.now() - birth_date) / (31557600000));
+
+                req.session.last_error = '';
+                res.json({order_id: searchorder._id,
+                    match_id: match.UserInfo._id,
+                    name: match.UserInfo.name,
+                    bio: match.UserInfo.bio,
+                    photo: match.UserInfo.photos[0].url,
+                    gender: (match.UserInfo.gender == 1) ? 'v' : 'm',
+                    age: age,
+                    distance: match.UserInfo.distance_mi * 1.6,
+                    // TODO
+                    pickupline: searchorder.PickupLines[0],/*match.UserInfo.PickupLine,*/
+                    responses: [
+                            'Lorem Ipsum is simply dummy text of the printing and typesetting industry.',
+                            'Nog een zin!!!1 fdjfdh%&^%*%^%^%^',
+                            'Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia, etc.'
+                    ]     });
+                    //responses: match.Response});
+            }
+        }
+    }).done();
+
+});
+
+router.get('/setMatchResponse', function (req, res) {
+    // Zijn we wel ingelogd?
+    if (!req.session.user) {
+        req.session.last_error = "";
+        res.status(403).end();
+        return;
+    }
+
+    var order_id = req.param('order_id', '');
+    var match_id = req.param('match_id', '');
+    var success = req.param('success','');
+
+    if (success === '') {
+        // Ontbrekende response.
+        req.session.last_error = "";
+        res.status(404).end();
+        return;
+    }
+    success = parseInt(success, 10);
+    if (success != 0 && success != 1) {
+        // Ongeldige response.
+        req.session.last_error = "";
+        res.status(404).end();
+        return;
+    }
+    success = (success == 1);
+
+    var searchorder = searchService.getSearchOrderById(order_id).then(function (searchorder) {
+        if (!searchorder) {
+            // Ongeldige searchorderid meegegeven.
+            req.session.last_error = "";
+            res.status(404).end();
+        } else {
+            // TODO - checken of dit wel een searchorder is van de ingelogde gebruiker.
+
+            // Ophalen juiste match binnen de searchorder.
+            var match = null;
+            searchorder.Matches.every ( function (el) {
+                if (el.UserInfo._id == match_id) {
+                    match = el;
+                    return false;
+                }
+                return true;
+            });
+            if (!match) {
+                // Ongeldige matchid meegegeven.
+                req.session.last_error = "";
+                res.status(404).end();
+                return;
+            }
+
+            // Checken of deze match wel een status 'response' heeft.
+            // TODO - enablen.
+            if (false /*match.Success !== null || match.Response.length == 0*/) {
+                req.session.last_error = "";
+                res.status(404).end();
+            } else {
+                // Updaten van deze match binnen de searchorder.
+                searchorder.Matches.every ( function (el) {
+                    if (el.UserInfo._id == match_id) {
+                        el.Success = success;
+                        return false;
+                    }
+                    return true;
+                });
+
+                // Nu de gewijzigde searchorder terugschieten.
+                searchService.updateRunningSearchOrder(searchorder).then(function(result){
+                    req.session.last_error = "";
+                    res.status(200).end();
+                }).fail( function (error) {
+                    console.log('error updating searchorder: ' + error.message);
+                    req.session.last_error = "";
+                    res.status(500).end();
+                }).done();
+            }
+        }
+    }).done();
+})
 
 module.exports = router;

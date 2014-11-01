@@ -4,6 +4,8 @@
 
 $(document).ready(function(){
 
+    var searchId = $('.searchdrop').val();
+
     //geslacht radio buttons
     $('#gender').buttonset();
 
@@ -70,6 +72,110 @@ $(document).ready(function(){
         var id = $(this).attr('id');
         console.log(id);
 
+    });
+
+    //ander zoekopdracht
+    $('.searchdrop').change(function () {
+        searchId = this.value;
+        console.log(searchId);
+
+        /*
+        $.ajax({
+            url:'url??',
+            success:function(data){
+                console.log('succes!');
+        }});
+        */
+
+    });
+
+    function getAllMatchData(){
+        $.ajax({
+            url:'/status/getMatchesList?id=' + searchId,
+            success:function(data){
+                $('#matchlist').fadeOut(function(){
+                    $('#matchlist').html('');
+                    $('#matchlist').show();
+                    $(data).each( function( index, el ) {
+                        var gender = el.gender;
+                        if(gender == 'm'){
+                            gender = ' Guy';
+                        }else{
+                            gender = ' Girl';
+                        }
+
+                        var hide = 'hidden_'+index;
+                        var html = '<div style="display: none;" class="match '+hide+'">'
+                                    +'<div class="photo_wrap">'
+                                        +'<div style="background-image: url('+ el.photo +');" class="photo"></div></div>'
+                                    +'<div class="wrap_text">'
+                                        +'<div class="text">'
+                                        +'<div class="name">'+ el.name + ' | ' + el.age + ' | ' + gender +'</div>'
+                                        //+'<div>'+ el.age + gender +'</div>'
+                                        +'<div>'+ el.bio +'</div>'
+                                        +'<div>'+ Math.round((el.distance * 1.609344)) +' KM</div>'
+                                        +'</div>'
+                                        +'<div class="button"><div id="'+el.match_id+'" class="getstatus">Status: '+ el.status +'</div></div></div>'
+                                  +'</div>';
+
+                        $('#matchlist').append(html);
+                        $('.'+hide).delay(150*index).fadeIn();
+                    });
+
+                    $('.getstatus').click(function () {
+                        var id = $(this).attr('id');
+                        $('#panel, #panelbg').fadeIn();
+                        $.ajax({
+                            url:'/status/getmatch?order_id='+searchId+'&match_id='+id,
+                            success:function(data){
+
+                                var gender = data.gender;
+                                if(gender == 'm'){
+                                    gender = ' Guy';
+                                }else{
+                                    gender = ' Girl';
+                                }
+
+                                var message = '<div class="response_text" style="color: #f15a24;">'+data.pickupline+'</div>';
+                                $(data.responses).each( function( index, txt ) {
+                                    message += '<div class="response_text">'+txt+'</div>';
+                                });
+
+                                var html_match = '<div class="match">'
+                                    +'<div class="photo_wrap">'
+                                    +'<div style="background-image: url('+ data.photo +');" class="photo"></div></div>'
+                                    +'<div class="wrap_text">'
+                                    +'<div class="text">'
+                                    +'<div class="name">'+ data.name + ' | ' + data.age + ' | ' + gender +'</div>'
+                                    +'<div class="bio">'+ data.bio +'</div>'
+                                    +'<div>'+ Math.round((data.distance * 1.609344)) +' KM</div>'
+                                    +'</div>'
+                                    +'</div>'
+                                    //+'<div class="button">Status: '+ data.status +'</div></div>'
+                                    +'</div>'
+                                    +'<div class="text_response">'+message+'</div>'
+                                    +'<div class="knop_response">Goed - Fout</div>';
+
+                                $('#panel').html(html_match);
+
+                                
+
+                            }
+                        });
+
+                    });
+
+                });
+            }
+        });
+    }
+
+    $('#reload').click(function () {
+        getAllMatchData();
+    });
+
+    $('#panelbg').click(function () {
+        $('#panel, #panelbg').fadeOut();
     });
 
 });

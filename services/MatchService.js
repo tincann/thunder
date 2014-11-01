@@ -59,18 +59,4 @@ MatchService.prototype.updateMatch = function(orderId, tinderId, fields) {
     return defered.promise;
 };
 
-MatchService.prototype.getMatchesForFbId = function(facebookAccountId) {
-    var defered = q.defer();
-
-    db.TinderMatches.find({ FacebookAccountId: facebookAccountId }, function(error, matches){
-        if(error){
-            defered.reject(error);
-            return
-        }else{
-            defered.resolve(matches);
-        }
-    });
-    return defered.promise;
-};
-
 module.exports = new MatchService();

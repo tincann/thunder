@@ -446,6 +446,11 @@ a .arrow:hover{
     height: 150px;
     width: 150px;
     background-image: url("../images/tinderlogo.png");
+    background-size: 150px 150px;
+    box-sizing:border-box;
+    -moz-box-sizing:border-box;
+    -webkit-box-sizing:border-box;
+    border: 5px solid #fff;
 }
 
 .wrap_text{
@@ -456,8 +461,10 @@ a .arrow:hover{
 
 .text{
     width: 150px;
-    height: 100px;
+    height: 130px;
     float: left;
+    overflow: hidden;
+    margin-left: 5px;
 }
 
 .button{
@@ -475,4 +482,66 @@ a .arrow:hover{
 #stats p{
     float: left;
     margin-right: 25px;
+}
+
+.name{
+    font-weight: bold;
+    color: #f15a24;
+}
+
+#panelbg{
+    z-index: 10;
+    position: fixed;
+    height: 100%;
+    width: 100%;
+    background-color: #000;
+    opacity: 0.75;
+    left: 0;
+    top: 0;
+    display: none;
+}
+
+#panel{
+    position: fixed;
+    width: 500px;
+    height: 500px;
+    background-color: #fff;
+    top: 175px;
+    margin-left: 245px;
+    z-index: 100;
+    border: 1px dotted #f15a24;
+    display: none;
+}
+
+.getstatus{
+    color: #f15a24;
+}
+
+.getstatus:hover{
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+#panel .match{
+    width: 500px;
+}
+
+.bio{
+    width: 300px;
+}
+
+#panel .text{
+    overflow: visible;
+}
+
+.text_response{
+    height: 450px;
+}
+
+.knop_response{
+
+}
+
+.response_text{
+    margin: 10px;
 }

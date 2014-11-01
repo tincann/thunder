@@ -168,6 +168,23 @@ SearchService.prototype.completeSearchOrder = function(orderId) {
     });
 
     return defered.promise;
+}
+
+SearchService.prototype.updateRunningSearchOrder = function(new_searchOrder){
+    console.log('updating running searchorder');
+    var defered = q.defer();
+
+    db.SearchOrders.updateById(new_searchOrder._id, {$set: new_searchOrder }, function(error, result){
+        if(!error){
+            console.log('Running searchorder updated', result);
+            defered.resolve(result);
+        }else{
+            console.log('Running searchorder update failed', error);
+            defered.reject(error);
+        }
+    });
+
+    return defered.promise;
 };
 
 function MapSearchOrder(searchOrder){
