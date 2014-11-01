@@ -29,20 +29,25 @@ router.get('/', function (req, res) {
                 req.session.last_error = "";
                 res.redirect('/filters');
             } else {
-                // Alle searchorders afgerond, we kunnen het statusscherm tonen.
-                req.session.last_error = "";
-                res.render('status', { session: req.session});
+                // Alle searchorders afgerond, we kunnen het statusscherm tonen. We geven een lijst mee van
+                //  searchorders.
+                var orders = [];
+                var genders = {'m': 'man', 'v': 'vrouw', 'b': 'bi'};
+                searchorders.forEach(function (el) {
+                    var desc = genders[el.MatchCriteria.Gender] + ' - ' + el.MatchCriteria.Age.min + ' tot ' +
+                        el.MatchCriteria.Age.max + ' - ' + el.MatchCriteria.range + ' km van ' + el.MatchCriteria.City;
+                    orders.push({id: el._id, val: desc});
+                });
 
-                // TODO
-                /*return MatchService.getMatchesForFbId(req.session.user.fbid).then(function(matches){
-                    res.render('status', { session: req.session, matches: matches });
-                });*/
+                req.session.last_error = "";
+                res.render('status', { searchorders: orders, session: req.session});
             }
         }
     }).fail(function (error) {
         req.session.last_error('Fout bij ophalen searchorders: ' + error.message);
         res.render('status', { session: req.session });
-    });
+    }).done();
+
 });
 
 module.exports = router;
