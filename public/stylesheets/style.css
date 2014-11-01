@@ -304,6 +304,11 @@ input{
     color: #fff;
 }
 
+a .arrow:hover{
+    background-image: url("../images/arrow_white.png");
+    color: #f15a24;
+}
+
 .submit_btn {
     -moz-box-shadow:inset 0px 1px 0px 0px #ffffff;
     -webkit-box-shadow:inset 0px 1px 0px 0px #ffffff;
