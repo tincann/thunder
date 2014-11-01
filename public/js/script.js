@@ -154,11 +154,17 @@ $(document).ready(function(){
                                     //+'<div class="button">Status: '+ data.status +'</div></div>'
                                     +'</div>'
                                     +'<div class="text_response">'+message+'</div>'
-                                    +'<div class="knop_response">Goed - Fout</div>';
+                                    +'<div class="knop_response"><span class="pos">positief</span>      <span class="neg">negatief</span></div>';
 
                                 $('#panel').html(html_match);
 
-                                
+                                $('.pos').click(function () {
+                                    setresponse(id,1);
+                                });
+
+                                $('.neg').click(function () {
+                                    setresponse(id,0);
+                                });
 
                             }
                         });
@@ -177,5 +183,14 @@ $(document).ready(function(){
     $('#panelbg').click(function () {
         $('#panel, #panelbg').fadeOut();
     });
+
+    function setresponse(id,success){
+        $.ajax({
+            url:'/status/setmatchresponse?order_id='+searchId+'&match_id='+id+'&success='+success,
+            success:function(set){
+                $('#panel, #panelbg').fadeOut();
+                getAllMatchData();
+            }});
+    }
 
 });
