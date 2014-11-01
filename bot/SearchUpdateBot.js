@@ -2,6 +2,7 @@ var db = require('../thunder-db').database;
 var TinderService = require('../services/TinderService').createInstance(); //eigen instantie ipv singleton
 var SearchService = require('../services/SearchService');
 var FacebookService = require('../services/FacebookService');
+var q = require('q');
 
 var STATUS = {
     IDLE: 0,
@@ -39,14 +40,15 @@ SearchUpdateBot.prototype.loop = function() {
                     }).then(function(){
                         return TinderService.getUpdates();
                     }).then(function(updates){
-                        if(updates){
-                            
-                        }else{
-                            console.log('received no updates');
-                        }
+                        console.log('received updates', updates);
+                        var defereds = updates.matches.map(function(match){
+                            console.log('matched with:', match._id);
+                            return TinderService.setMatched(searchOrder._id, match._id);
+                        });
+                        return q.all(defereds);                        
                     }).fail(function(error){
                         console.log(error);
-                    }).done();
+                    });
                 });
             }
         }).fail(function(error){
@@ -55,6 +57,10 @@ SearchUpdateBot.prototype.loop = function() {
             self.status = STATUS.IDLE;
         });
     }
+};
+
+SearchUpdateBot.prototype.method_name = function(first_argument) {
+    // body...
 };
 
 module.exports = new SearchUpdateBot();

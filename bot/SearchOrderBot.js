@@ -59,10 +59,13 @@ SearchOrderBot.prototype.processOrder = function(order){
     }).then(function(account){
         return TinderService.authorize(account);
     }).then(function(){
-        return TinderService.setPosition('4.897156', '52.368368'); //todo niet hardcoden
+        console.log('setting position');
+        return TinderService.setPosition('5.119527', '52.078969'); //todo niet hardcoden
     }).then(function(){
+        console.log('getting recommendations');
         return TinderService.getRecommendations(order.FacebookAccountId, order.SampleSize);
     }).then(function(matches){
+        console.log('setting inserting matches');
         return MatchService.insertMatches(order._id, matches).then(function(){
             return TinderService.likeBatch(order._id, matches);
         });
