@@ -155,6 +155,7 @@ router.get('/getMatch', function(req, res) {
                     age: age,
                     distance: match.UserInfo.distance_mi * 1.6,
                     // TODO
+                    pickupline: searchorder.PickupLines[0],/*match.UserInfo.PickupLine,*/
                     responses: [
                             'Lorem Ipsum is simply dummy text of the printing and typesetting industry.',
                             'Nog een zin!!!1 fdjfdh%&^%*%^%^%^',
