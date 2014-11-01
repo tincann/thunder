@@ -59,28 +59,39 @@ router.get('/getMatchesList', function(req, res) {
 
     var order_id = req.param('id', '');
     var searchorder = searchService.getSearchOrderById(order_id).then(function (searchorder) {
-            if (!searchorder) {
-                // Ongeldige search order meegegeven.
-                req.session.last_error = "";
-                res.status(404).end();
-            } else {
-                // TODO - checken of dit wel een searchorder is van de ingelogde gebruiker.
+        if (!searchorder) {
+            // Ongeldige search order meegegeven.
+            req.session.last_error = "";
+            res.status(404).end();
+        } else {
+            // TODO - checken of dit wel een searchorder is van de ingelogde gebruiker.
 
-                // Ophalen alle TinderMatches.
-                var match_list = [];
-                searchorder.Matches.forEach(function(el) {
-                    match_list.push({match_id: el._id});
-                });
-               /* console.log(searchorder.Matches[0]);
-                res.end();
-                return;*/
-                // Doorlopen en response vullen.
+            // Ophalen alle TinderMatches en response vullen.
+            var match_list = [];
 
-                var temp = {match_id: 'fdfdfd434343', status: 'success', userinfo: {'name': 'Daniel', 'gender': 'm', 'age': 38}};
-                req.session.last_error = '';
-                res.json([temp, temp]);
-            }
-        }).done();
+            searchorder.Matches.forEach(function(el) {
+                var status = 'unknown';
+                if (el.Success === true) {
+                    status = 'success';
+                } else if (el.Success === false) {
+                    status = 'fail';
+                } else if (el.Success === null && el.Response.length > 0) {
+                    status = 'response';
+                }
+                match_list.push({match_id: el._id,
+                    name: el.UserInfo.name,
+                    bio: el.UserInfo.bio,
+                    photo: el.UserInfo.photos[0].url,
+                    age: 99,
+                    distance: el.UserInfo.distance_mi * 1.6,
+                    status: status});
+            });
+
+            req.session.last_error = '';
+            res.json(match_list);
+        }
+    }).done();
+    
 });
 
 module.exports = router;
