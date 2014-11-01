@@ -33,9 +33,9 @@ block content
                     #sample
                     input(type="number", id="samplesize", name="samplesize", value="#{samplesize || '50'}")
 
-                #submit.filters
+                #submit.pickuplines
                     input(type="hidden", name="searchorder_id", value="#{searchorder_id || ''}")
-                    input(type='submit', name='Go Thunder', value='Next')
+                    input(type='submit', name='Go Thunder', class="submit_btn", value='Next', id="pickuplinessubmit")
 
     #footer
         #arrow_wrapper

@@ -186,6 +186,14 @@ input{
     float: right;
 }
 
+#wrapper #pickuplinessubmit{
+    float: right;
+}
+
+#pickup #submit{
+    margin-top: 25px;
+}
+
 #range_wrap{
     width: 800px;
     height: 50px;
@@ -222,6 +230,11 @@ input{
 #submit.filters{
     float: left;
     width: 150px;
+    margin-top: 50px;
+}
+
+#submit .pickuplines{
+    float: left;
     margin-top: 50px;
 }
 
