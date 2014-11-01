@@ -128,8 +128,13 @@ $(document).ready(function(){
                         $.ajax({
                             url:'/status/getmatch?order_id='+searchId+'&match_id='+id,
                             success:function(data){
+
                                 console.log(data);
 
+                                var message = '<div class="response_text" style="color: #f15a24;">'+data.pickupline+'</div>';
+                                $(data.responses).each( function( index, txt ) {
+                                    message += '<div class="response_text">'+txt+'</div>';
+                                });
 
                                 var html_match = '<div class="match">'
                                     +'<div class="photo_wrap">'
@@ -140,10 +145,11 @@ $(document).ready(function(){
                                     +'<div class="bio">'+ data.bio +'</div>'
                                     +'<div>'+ Math.round((data.distance * 1.609344)) +' KM</div>'
                                     +'</div>'
-                                    +'<div class="button">Status: '+ data.status +'</div></div>'
                                     +'</div>'
-                                    +'<div class="text_response">text</div>'
-                                    +'<div class="knop_response">Knoppen</div>';
+                                    //+'<div class="button">Status: '+ data.status +'</div></div>'
+                                    +'</div>'
+                                    +'<div class="text_response">'+message+'</div>'
+                                    +'<div class="knop_response">Goed - Fout</div>';
 
                                 $('#panel').html(html_match);
 

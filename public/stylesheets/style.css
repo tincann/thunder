@@ -535,9 +535,13 @@ a .arrow:hover{
 }
 
 .text_response{
-    height: 250px;
+    height: 450px;
 }
 
 .knop_response{
 
+}
+
+.response_text{
+    margin: 10px;
 }
