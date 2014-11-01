@@ -491,7 +491,7 @@ a .arrow:hover{
 
 #panelbg{
     z-index: 10;
-    position: absolute;
+    position: fixed;
     height: 100%;
     width: 100%;
     background-color: #000;
@@ -502,7 +502,7 @@ a .arrow:hover{
 }
 
 #panel{
-    position: absolute;
+    position: fixed;
     width: 500px;
     height: 500px;
     background-color: #fff;
@@ -511,4 +511,33 @@ a .arrow:hover{
     z-index: 100;
     border: 1px dotted #f15a24;
     display: none;
+}
+
+.getstatus{
+    color: #f15a24;
+}
+
+.getstatus:hover{
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+#panel .match{
+    width: 500px;
+}
+
+.bio{
+    width: 300px;
+}
+
+#panel .text{
+    overflow: visible;
+}
+
+.text_response{
+    height: 250px;
+}
+
+.knop_response{
+
 }
