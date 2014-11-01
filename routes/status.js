@@ -167,4 +167,84 @@ router.get('/getMatch', function(req, res) {
 
 });
 
+router.get('/setMatchResponse', function (req, res) {
+    // Zijn we wel ingelogd?
+    if (!req.session.user) {
+        req.session.last_error = "";
+        res.status(403).end();
+        return;
+    }
+
+    var order_id = req.param('order_id', '');
+    var match_id = req.param('match_id', '');
+    var success = req.param('success','');
+
+    if (success === '') {
+        // Ontbrekende response.
+        req.session.last_error = "";
+        res.status(404).end();
+        return;
+    }
+    success = parseInt(success, 10);
+    if (success != 0 && success != 1) {
+        // Ongeldige response.
+        req.session.last_error = "";
+        res.status(404).end();
+        return;
+    }
+    success = (success == 1);
+
+    var searchorder = searchService.getSearchOrderById(order_id).then(function (searchorder) {
+        if (!searchorder) {
+            // Ongeldige searchorderid meegegeven.
+            req.session.last_error = "";
+            res.status(404).end();
+        } else {
+            // TODO - checken of dit wel een searchorder is van de ingelogde gebruiker.
+
+            // Ophalen juiste match binnen de searchorder.
+            var match = null;
+            searchorder.Matches.every ( function (el) {
+                if (el.UserInfo._id == match_id) {
+                    match = el;
+                    return false;
+                }
+                return true;
+            });
+            if (!match) {
+                // Ongeldige matchid meegegeven.
+                req.session.last_error = "";
+                res.status(404).end();
+                return;
+            }
+
+            // Checken of deze match wel een status 'response' heeft.
+            // TODO - enablen.
+            if (false /*match.Success !== null || match.Response.length == 0*/) {
+                req.session.last_error = "";
+                res.status(404).end();
+            } else {
+                // Updaten van deze match binnen de searchorder.
+                searchorder.Matches.every ( function (el) {
+                    if (el.UserInfo._id == match_id) {
+                        el.Success = success;
+                        return false;
+                    }
+                    return true;
+                });
+
+                // Nu de gewijzigde searchorder terugschieten.
+                searchService.updateRunningSearchOrder(searchorder).then(function(result){
+                    req.session.last_error = "";
+                    res.status(200).end();
+                }).fail( function (error) {
+                    console.log('error updating searchorder: ' + error.message);
+                    req.session.last_error = "";
+                    res.status(500).end();
+                }).done();
+            }
+        }
+    }).done();
+})
+
 module.exports = router;
