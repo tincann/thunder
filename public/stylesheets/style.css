@@ -461,7 +461,7 @@ a .arrow:hover{
 
 .text{
     width: 150px;
-    height: 100px;
+    height: 130px;
     float: left;
     overflow: hidden;
     margin-left: 5px;
@@ -487,4 +487,28 @@ a .arrow:hover{
 .name{
     font-weight: bold;
     color: #f15a24;
+}
+
+#panelbg{
+    z-index: 10;
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    background-color: #000;
+    opacity: 0.75;
+    left: 0;
+    top: 0;
+    display: none;
+}
+
+#panel{
+    position: absolute;
+    width: 500px;
+    height: 500px;
+    background-color: #fff;
+    top: 175px;
+    margin-left: 245px;
+    z-index: 100;
+    border: 1px dotted #f15a24;
+    display: none;
 }

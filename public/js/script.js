@@ -118,10 +118,8 @@ $(document).ready(function(){
                                         +'<div>'+ el.bio +'</div>'
                                         +'<div>'+ Math.round((el.distance * 1.609344)) +' KM</div>'
                                         +'</div>'
-                                        +'<div class="button">'+ el.status +'</div></div>'
+                                        +'<div class="button">Status: <a href="#">'+ el.status +'</a></div></div>'
                                   +'</div>';
-
-                        //input(type='submit', id="12345" class="submit_btn openmatch", name='select' value='open')
 
                         $('#matchlist').append(html);
                         $('.'+hide).delay(150*index).fadeIn();
