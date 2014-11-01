@@ -129,7 +129,12 @@ $(document).ready(function(){
                             url:'/status/getmatch?order_id='+searchId+'&match_id='+id,
                             success:function(data){
 
-                                console.log(data);
+                                var gender = data.gender;
+                                if(gender == 'm'){
+                                    gender = ' Guy';
+                                }else{
+                                    gender = ' Girl';
+                                }
 
                                 var message = '<div class="response_text" style="color: #f15a24;">'+data.pickupline+'</div>';
                                 $(data.responses).each( function( index, txt ) {
@@ -141,7 +146,7 @@ $(document).ready(function(){
                                     +'<div style="background-image: url('+ data.photo +');" class="photo"></div></div>'
                                     +'<div class="wrap_text">'
                                     +'<div class="text">'
-                                    +'<div class="name">'+ data.name + ' | ' + data.age + ' | ' + data.gender +'</div>'
+                                    +'<div class="name">'+ data.name + ' | ' + data.age + ' | ' + gender +'</div>'
                                     +'<div class="bio">'+ data.bio +'</div>'
                                     +'<div>'+ Math.round((data.distance * 1.609344)) +' KM</div>'
                                     +'</div>'
@@ -152,6 +157,8 @@ $(document).ready(function(){
                                     +'<div class="knop_response">Goed - Fout</div>';
 
                                 $('#panel').html(html_match);
+
+                                
 
                             }
                         });
@@ -172,15 +179,3 @@ $(document).ready(function(){
     });
 
 });
-
-/*
-age: 22
-bio: "Slide slide slide. If we match, you matched a cow. Psychology/traveling/guitar/friends/food."
-distance: 52.800000000000004
-gender: "m"
-match_id: "5251dfbe02233e53560004c2"
-name: "René"
-order_id: "5454aa65fbf120f01e252e81"
-photo: "http://images.gotinder.com/5251dfbe02233e53560004c2/b184457b-6c2a-4071-a99f-b6cda9d0ad39.jpg"
-responses
-    */
