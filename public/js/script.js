@@ -98,7 +98,7 @@ $(document).ready(function(){
                     $('#matchlist').show();
                     $(data).each( function( index, el ) {
 
-                        console.log(el);
+                        //console.log(el);
 
                         var gender = el.gender;
                         if(gender == 'm'){
@@ -118,12 +118,21 @@ $(document).ready(function(){
                                         +'<div>'+ el.bio +'</div>'
                                         +'<div>'+ Math.round((el.distance * 1.609344)) +' KM</div>'
                                         +'</div>'
-                                        +'<div class="button">Status: <a href="#">'+ el.status +'</a></div></div>'
+                                        +'<div class="button"><div id="'+el.match_id+'" class="getstatus">Status: '+ el.status +'</div></div></div>'
                                   +'</div>';
 
                         $('#matchlist').append(html);
                         $('.'+hide).delay(150*index).fadeIn();
                     });
+
+                    $('.getstatus').click(function () {
+                        var id = $(this).attr('id');
+
+                        $('#panel, #panelbg').fadeIn();
+                        $('#panel').html(id + ' - ' + searchId);
+
+                    });
+
                 });
             }
         });
@@ -131,6 +140,10 @@ $(document).ready(function(){
 
     $('#reload').click(function () {
         getAllMatchData();
+    });
+
+    $('#panelbg').click(function () {
+        $('#panel, #panelbg').fadeOut();
     });
 
 });
