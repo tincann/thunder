@@ -11,25 +11,41 @@ router.get('/', function (req, res) {
         res.redirect('/login');
     }
 
-    // Haal de eerste search order op voor dit account die momenteel nog aangemaakt wordt.
-    searchService.getPendingSearchOrderByFaceBookId(req.session.user.fbid).then(function(existing_order) {
-            if (existing_order) {
-                // Params uit de search order uit de record halen.
-
-                 res.render('filters', {searchorder_id: existing_order._id,
-                    gender: existing_order.MatchCriteria.Gender ? existing_order.MatchCriteria.Gender : null,
-                    age_min: existing_order.MatchCriteria.Age ? (existing_order.MatchCriteria.Age.min ? existing_order.MatchCriteria.Age.min : null) : null,
-                    age_max: existing_order.MatchCriteria.Age ? (existing_order.MatchCriteria.Age.max ? existing_order.MatchCriteria.Age.max : null) : null,
-                    location_lat: existing_order.MatchCriteria.Location ? (existing_order.MatchCriteria.Location.lat ? existing_order.MatchCriteria.Location.lat : null) : null,
-                    location_lng: existing_order.MatchCriteria.Location ? (existing_order.MatchCriteria.Location.long ? existing_order.MatchCriteria.Location.long : null) : null,
-                    range: existing_order.MatchCriteria.Range ? existing_order.MatchCriteria.Range : null,
+    // Heeft deze account orders?
+    searchService.getAllSearchOrdersByFaceBookId(req.session.user.fbid).then(function(orders) {
+        if (orders && orders.length > 0) {
+            // Er zijn orders, zoek de eerste openstaande order.
+            var order_openstaand = null;
+            orders.every(function(el) {
+                if (el.MatchCriteria.Complete == 0) { 
+                    order_openstaand = el; return false;
+                } else {
+                    return true;  
+                }
+            });
+            
+            if (order_openstaand) {
+                // Er is een openstaande order, we geven de params aan de front-end.
+                res.render('filters', {searchorder_id: order_openstaand._id,
+                    gender: order_openstaand.MatchCriteria.Gender ? order_openstaand.MatchCriteria.Gender : null,
+                    age_min: order_openstaand.MatchCriteria.Age ? (order_openstaand.MatchCriteria.Age.min ? order_openstaand.MatchCriteria.Age.min : null) : null,
+                    age_max: order_openstaand.MatchCriteria.Age ? (order_openstaand.MatchCriteria.Age.max ? order_openstaand.MatchCriteria.Age.max : null) : null,
+                    location_lat: order_openstaand.MatchCriteria.Location ? (order_openstaand.MatchCriteria.Location.lat ? order_openstaand.MatchCriteria.Location.lat : null) : null,
+                    location_lng: order_openstaand.MatchCriteria.Location ? (order_openstaand.MatchCriteria.Location.long ? order_openstaand.MatchCriteria.Location.long : null) : null,
+                    range: order_openstaand.MatchCriteria.Range ? order_openstaand.MatchCriteria.Range : null,
                     session: req.session} );
             } else {
-                // Geen openstaande order, gewoon leeg scherm laten zien.
-                res.render('filters', {session: req.session});
+                // Wel orders, maar geen openstaande, dus we verwijzen door naar het status scherm.
+                res.redirect('/status');
             }
+        } else {
+            // Geen orders, we laten een leeg scherm zien.
+            res.render('filters', {session: req.session});
         }
-    );
+    }).fail(function(error) {
+        // TODO
+        res.render('filters', {session: req.session});
+    });
 });
 
 /* Opslaan ingevulde waarden. */
